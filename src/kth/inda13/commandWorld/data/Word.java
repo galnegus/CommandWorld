@@ -1,7 +1,15 @@
 package kth.inda13.commandWorld.data;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
+/**
+ * This enum is in practice the dictionary for the application. It contains the
+ * definition an meaning of all words the program recognizes.
+ * 
+ * @author rodrigo
+ *
+ */
 public enum Word {
 //	MAN,
 //	DOG,
@@ -161,29 +169,38 @@ public enum Word {
 	YELLOW(Color.YELLOW),
 	YELLOWGREEN(Color.YELLOW);
 	
-	private Color color;
-	private Size size;
-	private Location location;
+	private final Info info;
 	
 	//Maximal constructor, ultimately called by all other constructors.
-	private Word(Color color, Size size, Location location) {
-		this.color = color;
-		this.size = size;
-		this.location = location;
+	private Word(Color color, Size size, Location location, Image image) {
+		info = new Info();
+		info.color = color;
+		info.size = size;
+		info.location = location;
+		info.image = image;
 	}
 	
 	//This would be a color
 	private Word(Color color){
-		this(color, null, null);
+		this(color, null, null, null);
 	}
 	
 	//This is a size
 	private Word(Size size){
-		this(null, size, null);
+		this(null, size, null, null);
 	}
 	
 	//This is a location
 	private Word(Location location){
-		this(null, null, location);
+		this(null, null, location, null);
+	}
+	
+	//This is a noun
+	private Word(Image image){
+		this(null, null, null, image);
+	}
+	
+	public Info getInfo(){
+		return info;
 	}
 }
