@@ -1,0 +1,56 @@
+.root {
+	
+}
+
+#output-image-pane {
+	
+}
+
+#help-button {
+	-fx-font-size: 20;
+	-fx-font-weight: bold;
+}
+
+#response-grid-pane {
+	-fx-padding: 5 5 8 15;
+	-fx-background-color: #f8f8f8;
+}
+
+#response-grid-pane .label {
+	-fx-font-size: 15;
+}
+
+.cool-label {
+	-fx-font-style: italic;
+}
+
+#response-grid-pane, #input-hbox {
+	-fx-border-color: #555;
+	-fx-border-width: 1.5 0 0 0;
+	-fx-border-style: solid;
+}
+
+#input-hbox {
+	-fx-padding: 10;
+	-fx-background-color: #eee;
+}
+
+#input-text-field {
+	-fx-padding: 5;
+}
+
+#input-text-field:focused {
+    -fx-background-color: -fx-focus-color, -fx-text-box-border, -fx-control-inner-background;
+    -fx-background-insets: -0.4, 1, 2;
+    -fx-background-radius: 3.4, 2, 2;
+    -fx-prompt-text-fill: transparent;
+}
+
+#input-submit-button {
+	
+	-fx-padding: 5 20;
+}
+
+#input-text-field, #input-submit-button {
+	-fx-font-size: 20;
+}
