@@ -15,6 +15,7 @@ import kth.inda13.commandWorld.data.Word;
  *
  */
 public class Entity {
+	private Word word;
 	private final Info info;
 	
 	/**
@@ -32,6 +33,7 @@ public class Entity {
 	 * @param word how to alter the entity.
 	 */
 	public void modify(Word word){
+		this.word = word;
 		Info how = word.getInfo();
 		
 		if(how.color != null)
@@ -51,6 +53,16 @@ public class Entity {
 	 */
 	public Info getInfo(){
 		return this.info;
+	}
+	
+	/**
+	 * getWord returns the word that this entity represents.
+	 * This is needed, otherwise it won't be possible to differentiate between different entities.
+	 * 
+	 * @return the word that created this entity
+	 */
+	public Word getWord() {
+		return word;
 	}
 	
 }

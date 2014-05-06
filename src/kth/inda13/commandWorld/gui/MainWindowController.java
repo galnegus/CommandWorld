@@ -7,11 +7,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import kth.inda13.commandWorld.data.Word;
+import kth.inda13.commandWorld.logic.World;
 
 public class MainWindowController {
+	
+	private World world;
 
+	@FXML
+	private StackPane outputImagePane;
+	
 	@FXML
 	private Label inputLabel;
 	@FXML
@@ -28,7 +37,7 @@ public class MainWindowController {
 	 */
 	@FXML
 	private void initialize() {
-		
+		world = new World(outputImagePane);
 	}
 	
 	/**
@@ -70,6 +79,24 @@ public class MainWindowController {
 			// print response & input
 			inputLabel.setText(input);
 			responseLabel.setText(response);
+			
+			// hardcoded testing
+			if(input.equalsIgnoreCase("e person")) {
+				world.add(Word.PERSON);
+			}
+			if(input.equalsIgnoreCase("e red i person")) {
+				world.color("person", "red");
+			}
+			if(input.equalsIgnoreCase("e blue i person")) {
+				world.color("person", "blue");
+			}
+			if(input.equalsIgnoreCase("e top i person")) {
+				world.move("person", "top");
+			}
+			if(input.equalsIgnoreCase("e move i person")) {
+				world.moveTo("person", 100, 0);
+			}
+			
 		}
 		
 		// this will return focus to the textfield if the submit button was clicked

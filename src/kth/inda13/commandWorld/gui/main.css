@@ -3,7 +3,7 @@
 }
 
 #output-image-pane {
-	
+	-fx-padding: 10;
 }
 
 .button {
