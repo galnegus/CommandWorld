@@ -1,10 +1,6 @@
 package kth.inda13.commandWorld.logic;
 
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import kth.inda13.commandWorld.data.Info;
-import kth.inda13.commandWorld.data.Location;
-import kth.inda13.commandWorld.data.Size;
 import kth.inda13.commandWorld.data.Word;
 
 /**

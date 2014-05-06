@@ -1,8 +1,6 @@
 package kth.inda13.commandWorld.logic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javafx.animation.FadeTransition;
@@ -10,16 +8,11 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
-import javafx.animation.PathTransition.OrientationType;
 import javafx.animation.Timeline;
-import javafx.beans.binding.Bindings;
-import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.ColorInput;
-import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -27,7 +20,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.QuadCurveTo;
 import javafx.util.Duration;
 import kth.inda13.commandWorld.data.Location;
 import kth.inda13.commandWorld.data.Word;
@@ -126,8 +118,8 @@ public class World {
 			if (entity.getInfo().location == null) {
 				entity.getInfo().location = new Location(x, y);
 			} else {
-				entity.getInfo().location.x += x;
-				entity.getInfo().location.y += y;
+				entity.getInfo().location.x = x;
+				entity.getInfo().location.y = y;
 			}
 			
 			ImageView imageView = entityMap.get(entity);
@@ -141,8 +133,8 @@ public class World {
 			double startY = imageView.getTranslateY() + heightOffset;
 
 			// target position for animation
-			double targetX = startX + x;
-			double targetY = startY + y;
+			double targetX = x + widthOffset;
+			double targetY = y + heightOffset;
 
 			// path from start to finish
 			Path path = new Path();
