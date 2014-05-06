@@ -85,16 +85,22 @@ public class MainWindowController {
 				world.add(Word.PERSON);
 			}
 			if(input.equalsIgnoreCase("e red i person")) {
-				world.color("person", "red");
+				world.event(world.get("person"), Word.RED);
 			}
 			if(input.equalsIgnoreCase("e blue i person")) {
-				world.color("person", "blue");
+				world.event(world.get("person"), Word.BLUE);
 			}
-			if(input.equalsIgnoreCase("e top i person")) {
-				world.move("person", "top");
+			if(input.equalsIgnoreCase("e up i person")) {
+				world.event(world.get("person"), Word.UP);
 			}
-			if(input.equalsIgnoreCase("e move i person")) {
-				world.moveTo("person", 100, 0);
+			if(input.equalsIgnoreCase("e right i person")) {
+				world.event(world.get("person"), Word.RIGHT);
+			}
+			if(input.equalsIgnoreCase("e down i person")) {
+				world.event(world.get("person"), Word.DOWN);
+			}
+			if(input.equalsIgnoreCase("e left i person")) {
+				world.event(world.get("person"), Word.LEFT);
 			}
 			
 		}

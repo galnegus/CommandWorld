@@ -5,8 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
 import javafx.animation.PathTransition.OrientationType;
+import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
@@ -22,7 +27,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.QuadCurveTo;
 import javafx.util.Duration;
+import kth.inda13.commandWorld.data.Location;
 import kth.inda13.commandWorld.data.Word;
 
 public class World {
@@ -41,16 +48,22 @@ public class World {
 	 *            the entity being added
 	 */
 	public void add(Word word) {
-		Entity e = new Entity();
-		e.modify(word);
+		Entity entity = new Entity();
+		entity.modify(word);
 
-		Image image = e.getInfo().image;
+		Image image = entity.getInfo().image;
 
 		if (image != null) {
-			ImageView iv = new ImageView(image);
-			entityMap.put(e, iv);
+			ImageView imageView = new ImageView(image);
+			entityMap.put(entity, imageView);
 
-			imagePane.getChildren().add(iv);
+			imagePane.getChildren().add(imageView);
+
+			// fade in entity to visibility
+			FadeTransition ft = new FadeTransition(Duration.millis(1000), imageView);
+			ft.setFromValue(0.0);
+			ft.setToValue(1);
+			ft.play();
 		}
 
 	}
@@ -79,86 +92,118 @@ public class World {
 	public int size() {
 		return entityMap.size();
 	}
-
+	
 	/**
-	 * alignment based movement test
+	 * Performs an event, if the word contains some data, it is applied to the intent.
 	 * 
-	 * @param word
-	 * @param location
+	 * @param intent the entity being altered
+	 * @param event the event being performed
 	 */
-	public void move(String word, String location) {
-		Entity e = get(word);
-
-		if (e != null) {
-			ImageView iv = entityMap.get(e);
-
-			if (location.equals("top")) { // temporary test thing
-				StackPane.setAlignment(iv, Pos.TOP_CENTER);
+	public void event(Entity intent, Word event) {
+		if (intent != null && event != null) {
+			if (event.getInfo().color != null) {
+				color(intent, event.getInfo().color);
+			}
+			if (event.getInfo().location != null) {
+				move(intent, event.getInfo().location.x, event.getInfo().location.y);
 			}
 		}
 	}
 
 	/**
-	 * experimental animated movement
+	 * Moves an entity by given amount of pixels. <br />
+	 * For example calling move(person, -100.0, 0.0) will move person entity 100 pixels to the left.
 	 * 
-	 * @param word
+	 * @param entity
+	 *            entity to move
 	 * @param x
+	 *            amount of pixels to move entity by horizontally
 	 * @param y
+	 *            amount of pixels to move entity by vertically
 	 */
-	public void moveTo(String word, int x, int y) {
-		Entity e = get(word);
+	private void move(Entity entity, int x, int y) {
+		if (entity != null) {
+			if (entity.getInfo().location == null) {
+				entity.getInfo().location = new Location(x, y);
+			} else {
+				entity.getInfo().location.x += x;
+				entity.getInfo().location.y += y;
+			}
+			
+			ImageView imageView = entityMap.get(entity);
 
-		if (e != null) {
-			ImageView imageView = entityMap.get(e);
-			
-			double widthOffset = e.getInfo().image.getWidth() / 2;
-			double heightOffset = e.getInfo().image.getHeight() / 2;
-			
+			// for some reason coordinate systems when creating and moving nodes are different
+			double widthOffset = entity.getInfo().image.getWidth() / 2.0;
+			double heightOffset = entity.getInfo().image.getHeight() / 2.0;
+
+			// starting position for animation
+			double startX = imageView.getTranslateX() + widthOffset;
+			double startY = imageView.getTranslateY() + heightOffset;
+
+			// target position for animation
+			double targetX = startX + x;
+			double targetY = startY + y;
+
+			// path from start to finish
 			Path path = new Path();
-			path.getElements().add(new MoveTo(0 + widthOffset, 0 + heightOffset));
-			path.getElements().add(new LineTo(x + widthOffset, y + heightOffset));
-
+			path.getElements().add(new MoveTo(startX, startY));
+			path.getElements().add(new LineTo(targetX, targetY));
+			
+			// animation stuff
 			PathTransition pathTransition = new PathTransition();
-
 			pathTransition.setDuration(Duration.millis(1000));
 			pathTransition.setNode(imageView);
 			pathTransition.setPath(path);
-			pathTransition.setOrientation(OrientationType.NONE);
-			pathTransition.setCycleCount(1);
-			pathTransition.setAutoReverse(true);
-
+			pathTransition.setInterpolator(Interpolator.EASE_BOTH);
 			pathTransition.play();
 		}
 	}
+	
+	private void size(Entity entity, int x, int y) {
+		// TODO
+	}
 
 	/**
-	 * coloring test
+	 * Changes color of entity to color defined by given color word. <br />
 	 * 
-	 * @param word
+	 * @param entity
+	 *            the entity that is being colored
 	 * @param color
+	 *            the new color of the entity
 	 */
-	public void color(String word, String color) {
-		Entity e = get(word);
-
-		Color c = Color.RED;
-
-		if (color.equals("blue")) {
-			c = Color.BLUE;
+	private void color(Entity entity, Color color) {
+		// set current color, needed for animation
+		Color startColor = entity.getInfo().color;
+		if (startColor == null) {
+			startColor = new Color(0, 0, 0, 0);
 		}
 
-		if (e != null) {
-			ImageView imageView = entityMap.get(e);
+		// set new color
+		Color targetColor = color;
 
-			imageView.setClip(new ImageView(e.getInfo().image));
+		if (entity != null) {
+			// update entity color data
+			entity.getInfo().color = targetColor;
 
-			ColorAdjust monochrome = new ColorAdjust();
-			monochrome.setSaturation(-1.0);
+			ImageView imageView = entityMap.get(entity);
 
-			Blend blush = new Blend(BlendMode.MULTIPLY, monochrome, new ColorInput(0, 0, imageView.getImage()
-					.getWidth(), imageView.getImage().getHeight(), c));
+			// mask the area that is being colored
+			imageView.setClip(new ImageView(entity.getInfo().image));
 
+			// create the coloring effect
+			ColorInput colorInput = new ColorInput(0, 0, imageView.getImage().getWidth(), imageView.getImage()
+					.getHeight(), targetColor);
+			Blend blush = new Blend(BlendMode.MULTIPLY, colorInput, null);
 			imageView.setEffect(blush);
 
+			// animate coloring effect from startColor to targetColor
+			Timeline timeline = new Timeline();
+			timeline.getKeyFrames().addAll(
+					new KeyFrame(Duration.ZERO, new KeyValue(colorInput.paintProperty(), startColor)),
+					new KeyFrame(new Duration(1000), new KeyValue(colorInput.paintProperty(), targetColor)));
+			timeline.play();
+
+			// cache imageView for performance or something
 			imageView.setCache(true);
 			imageView.setCacheHint(CacheHint.SPEED);
 		}
