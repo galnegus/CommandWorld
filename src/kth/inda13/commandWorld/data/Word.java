@@ -23,7 +23,7 @@ public enum Word {
 	THIN(new Size(0.5, 1)), 
 	THICK(new Size(2, 1)), 
 	SHORT(new Size(1, 0.5)), 
-	LONG(new Size(1, 2)),
+	LONG(new Size(1, 4)),
 	ALICEBLUE(Color.ALICEBLUE),
 	ANTIQUEWHITE(Color.ANTIQUEWHITE),
 	AQUA(Color.AQUA),
@@ -177,11 +177,7 @@ public enum Word {
 	
 	//Maximal constructor, ultimately called by all other constructors.
 	private Word(Color color, Size size, Location location, Image image) {
-		info = new Info();
-		info.color = color;
-		info.size = size;
-		info.location = location;
-		info.image = image;
+		info = new Info(color, size, location, image);
 	}
 	
 	//This would be a color

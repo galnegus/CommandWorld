@@ -1,7 +1,10 @@
 package kth.inda13.commandWorld.logic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
@@ -29,10 +32,14 @@ import kth.inda13.commandWorld.data.Word;
 public class World {
 	private Map<Entity, ImageView> entityMap;
 	private StackPane imagePane;
+	
+	// used for picking random entities when multiple are available
+	private Random rng;
 
 	public World(StackPane imagePane) {
 		entityMap = new HashMap<Entity, ImageView>();
 		this.imagePane = imagePane;
+		rng = new Random();
 	}
 
 	/**
@@ -42,8 +49,7 @@ public class World {
 	 *            the entity being added
 	 */
 	public void add(Word word) {
-		Entity entity = new Entity();
-		entity.modify(word);
+		Entity entity = new Entity(word);
 
 		Image image = entity.getInfo().image;
 		if (image != null) {
@@ -62,17 +68,51 @@ public class World {
 	}
 
 	/**
-	 * get returns an entity from the World that matches the given word.
+	 * get returns a random entity from the World that matches the given word.
 	 * 
-	 * @param word
+	 * @param entity
 	 *            the word that the entity is created from
 	 * @return the entity, or null if no such entity exists
 	 */
-	public Entity get(String word) {
+	public Entity get(Word entity) {
+		List<Entity> results = new ArrayList<Entity>();
+		
 		for (Entity e : entityMap.keySet()) {
-			if (e.getWord().name().equalsIgnoreCase(word)) {
-				return e;
+			if (e.getWord() == entity) {
+				results.add(e);
 			}
+		}
+		
+		if (!results.isEmpty()) {
+			return results.get(rng.nextInt(results.size()));
+		}
+		return null;
+	}
+
+	/**
+	 * get returns a random entity from the World that matches the given word and the given descriptions. <br />
+	 * <br />
+	 * For example, this method could be called with get(Word.PERSON, Arrays.asList(Word.RED, Word.SMALL)), which would
+	 * return an entity that was created from the word "person", with an info object that is a superset of both
+	 * Word.RED's and Word.SMALL's info objects.
+	 * 
+	 * @param word
+	 *            the word that the entity is created from
+	 * @param descriptions
+	 *            a list of words that describes the entity
+	 * @return the entity, or null if no such entity exists
+	 */
+	public Entity get(Word entity, List<Word> descriptions) {
+		List<Entity> results = new ArrayList<Entity>();
+		
+		for (Entity e : entityMap.keySet()) {
+			if (e.getWord() == entity && e.matchesDescriptions(descriptions)) {
+				results.add(e);
+			}
+		}
+		
+		if (!results.isEmpty()) {
+			return results.get(rng.nextInt(results.size()));
 		}
 		return null;
 	}
@@ -100,10 +140,10 @@ public class World {
 				color(intent, event.getInfo().color);
 			}
 			if (event.getInfo().location != null) {
-				move(intent, event.getInfo().location.x, event.getInfo().location.y);
+				move(intent, event.getInfo().location);
 			}
 			if (event.getInfo().size != null) {
-				size(intent, event.getInfo().size.x, event.getInfo().size.y);
+				size(intent, event.getInfo().size);
 			}
 		}
 	}
@@ -120,14 +160,9 @@ public class World {
 	 * @param y
 	 *            amount of pixels to move entity by vertically
 	 */
-	private void move(Entity entity, double x, double y) {
+	private void move(Entity entity, Location location) {
 		if (entity != null) {
-			if (entity.getInfo().location == null) {
-				entity.getInfo().location = new Location(x, y);
-			} else {
-				entity.getInfo().location.x = x;
-				entity.getInfo().location.y = y;
-			}
+			entity.getInfo().location = location;
 
 			ImageView imageView = entityMap.get(entity);
 
@@ -140,8 +175,8 @@ public class World {
 			double startY = imageView.getTranslateY() + heightOffset;
 
 			// target position for animation
-			double targetX = x + widthOffset;
-			double targetY = y + heightOffset;
+			double targetX = location.x + widthOffset;
+			double targetY = location.y + heightOffset;
 
 			// path from start to finish
 			Path path = new Path();
@@ -164,33 +199,29 @@ public class World {
 	 * 
 	 * @param entity
 	 *            entity being resized
-	 * @param x
+	 * @param toX
 	 *            the x scale to resize by
-	 * @param y
+	 * @param toY
 	 *            the y scale to resize by
 	 */
-	private void size(Entity entity, double x, double y) {
+	private void size(Entity entity, Size size) {
 		if (entity != null) {
 			ImageView imageView = entityMap.get(entity);
 
 			double fromX = 1, fromY = 1;
-
 			// update info values and retrieve old scale if there is one
-			if (entity.getInfo().size == null) {
-				entity.getInfo().size = new Size(x, y);
-			} else {
+			if (entity.getInfo().size != null) {
 				fromX = entity.getInfo().size.x;
 				fromY = entity.getInfo().size.y;
-				entity.getInfo().size.x = x;
-				entity.getInfo().size.y = y;
 			}
+			entity.getInfo().size = size;
 
 			// transition
 			ScaleTransition st = new ScaleTransition(Duration.millis(1000), imageView);
 			st.setFromX(fromX);
 			st.setFromY(fromY);
-			st.setToX(x);
-			st.setToY(x);
+			st.setToX(size.x);
+			st.setToY(size.y);
 			st.play();
 		}
 	}

@@ -1,8 +1,6 @@
 package kth.inda13.commandWorld.logic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -89,7 +87,7 @@ public class Parser {
 //				while(!description[1].isEmpty())
 //					world.event(world.get(mainWord[1]), stringToWord.get(description[1].pop()));
 			}else if(mainWord[0] == null){//Case #2: modification. No agent.
-				world.event(world.get(mainWord[2]), stringToWord.get(mainWord[1]));
+				world.event(world.get(stringToWord.get(mainWord[2])), stringToWord.get(mainWord[1]));
 			}
 		}
 		//Temporal output to test parsing

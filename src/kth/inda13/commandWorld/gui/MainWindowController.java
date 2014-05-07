@@ -1,5 +1,7 @@
 package kth.inda13.commandWorld.gui;
 
+import java.util.Arrays;
+
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,6 +23,7 @@ public class MainWindowController {
 	
 	@FXML
 	private Label inputLabel;
+	
 	@FXML
 	private Label responseLabel;
 
@@ -79,9 +82,13 @@ public class MainWindowController {
 			inputLabel.setText(input);
 			responseLabel.setText(response);
 			
+			// hardcoded descriptions test
+			if (input.equals("e small i red left person")) {
+				world.event(world.get(Word.PERSON, Arrays.asList(Word.RED, Word.LEFT)), Word.SMALL);
+			}
 		}
-		
-		// this will return focus to the textfield if the submit button was clicked
+
+		// this will return focus to the textfield if the submit button was used rather than text area + ENTER
 		inputTextField.requestFocus();
 	}
 }
