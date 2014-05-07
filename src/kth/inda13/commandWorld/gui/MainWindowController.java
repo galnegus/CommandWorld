@@ -78,32 +78,6 @@ public class MainWindowController {
 			// print response & input
 			inputLabel.setText(input);
 			responseLabel.setText(response);
-
-			// hardcoded testing
-			if(input.equalsIgnoreCase("e person")) {
-				world.add(Word.PERSON);
-			}
-			if(input.equalsIgnoreCase("e red i person")) {
-				world.event(world.get("person"), Word.RED);
-			}
-			if(input.equalsIgnoreCase("e blue i person")) {
-				world.event(world.get("person"), Word.BLUE);
-			}
-			if(input.equalsIgnoreCase("e up i person")) {
-				world.event(world.get("person"), Word.UP);
-			}
-			if(input.equalsIgnoreCase("e right i person")) {
-				world.event(world.get("person"), Word.RIGHT);
-			}
-			if(input.equalsIgnoreCase("e down i person")) {
-				world.event(world.get("person"), Word.DOWN);
-			}
-			if(input.equalsIgnoreCase("e left i person")) {
-				world.event(world.get("person"), Word.LEFT);
-			}
-			if(input.equalsIgnoreCase("e big i person")) {
-				world.event(world.get("person"), Word.BIG);
-			}
 			
 		}
 		
