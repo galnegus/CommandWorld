@@ -23,7 +23,7 @@ public enum Word {
 	THIN(new Size(0.5, 1)), 
 	THICK(new Size(2, 1)), 
 	SHORT(new Size(1, 0.5)), 
-	LONG(new Size(1, 4)),
+	LONG(new Size(1, 2)),
 	ALICEBLUE(Color.ALICEBLUE),
 	ANTIQUEWHITE(Color.ANTIQUEWHITE),
 	AQUA(Color.AQUA),
