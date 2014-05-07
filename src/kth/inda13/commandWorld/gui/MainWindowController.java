@@ -8,11 +8,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import kth.inda13.commandWorld.data.Word;
+import kth.inda13.commandWorld.logic.Parser;
 import kth.inda13.commandWorld.logic.World;
 
 public class MainWindowController {
 	
 	private World world;
+	private Parser parser;
 
 	@FXML
 	private StackPane outputImagePane;
@@ -34,6 +36,7 @@ public class MainWindowController {
 	@FXML
 	private void initialize() {
 		world = new World(outputImagePane);
+		parser = new Parser(world);
 	}
 	
 	/**
@@ -67,7 +70,7 @@ public class MainWindowController {
 	@FXML
 	private void onSubmit() {
 		String input = inputTextField.getText();
-		String response = "todo";
+		String response = parser.Parse(input);
 		if (!input.isEmpty()) {
 			// remove old input
 			inputTextField.clear();
@@ -75,7 +78,7 @@ public class MainWindowController {
 			// print response & input
 			inputLabel.setText(input);
 			responseLabel.setText(response);
-			
+
 			// hardcoded testing
 			if(input.equalsIgnoreCase("e person")) {
 				world.add(Word.PERSON);
