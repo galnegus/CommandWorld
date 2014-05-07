@@ -44,7 +44,6 @@ public class World {
 		entity.modify(word);
 
 		Image image = entity.getInfo().image;
-
 		if (image != null) {
 			ImageView imageView = new ImageView(image);
 			entityMap.put(entity, imageView);
