@@ -1,9 +1,9 @@
 package kth.inda13.commandWorld.data;
 
 public abstract class BidimensionalConstruct {
-	public int x,y;
+	public double x,y;
 	
-	public BidimensionalConstruct(int x, int y){
+	public BidimensionalConstruct(double x, double y){
 		this.x = x;
 		this.y = y;
 	}

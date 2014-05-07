@@ -101,6 +101,9 @@ public class MainWindowController {
 			if(input.equalsIgnoreCase("e left i person")) {
 				world.event(world.get("person"), Word.LEFT);
 			}
+			if(input.equalsIgnoreCase("e big i person")) {
+				world.event(world.get("person"), Word.BIG);
+			}
 			
 		}
 		

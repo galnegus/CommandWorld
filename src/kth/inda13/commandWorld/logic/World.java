@@ -8,6 +8,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.scene.CacheHint;
 import javafx.scene.effect.Blend;
@@ -22,6 +23,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import kth.inda13.commandWorld.data.Location;
+import kth.inda13.commandWorld.data.Size;
 import kth.inda13.commandWorld.data.Word;
 
 public class World {
@@ -83,12 +85,14 @@ public class World {
 	public int size() {
 		return entityMap.size();
 	}
-	
+
 	/**
 	 * Performs an event, if the word contains some data, it is applied to the intent.
 	 * 
-	 * @param intent the entity being altered
-	 * @param event the event being performed
+	 * @param intent
+	 *            the entity being altered
+	 * @param event
+	 *            the event being performed
 	 */
 	public void event(Entity intent, Word event) {
 		if (intent != null && event != null) {
@@ -98,12 +102,16 @@ public class World {
 			if (event.getInfo().location != null) {
 				move(intent, event.getInfo().location.x, event.getInfo().location.y);
 			}
+			if (event.getInfo().size != null) {
+				size(intent, event.getInfo().size.x, event.getInfo().size.y);
+			}
 		}
 	}
 
 	/**
-	 * Moves an entity by given amount of pixels. <br />
-	 * For example calling move(person, -100.0, 0.0) will move person entity 100 pixels to the left.
+	 * Moves an entity to the specified position relative to the node alignment. <br />
+	 * For example calling move(person, -100.0, 0.0) will move the person entity 100 to left of the alignment node. <br />
+	 * By default, alignment will be the center of the imagePane.
 	 * 
 	 * @param entity
 	 *            entity to move
@@ -112,7 +120,7 @@ public class World {
 	 * @param y
 	 *            amount of pixels to move entity by vertically
 	 */
-	private void move(Entity entity, int x, int y) {
+	private void move(Entity entity, double x, double y) {
 		if (entity != null) {
 			if (entity.getInfo().location == null) {
 				entity.getInfo().location = new Location(x, y);
@@ -120,7 +128,7 @@ public class World {
 				entity.getInfo().location.x = x;
 				entity.getInfo().location.y = y;
 			}
-			
+
 			ImageView imageView = entityMap.get(entity);
 
 			// for some reason coordinate systems when creating and moving nodes are different
@@ -139,7 +147,7 @@ public class World {
 			Path path = new Path();
 			path.getElements().add(new MoveTo(startX, startY));
 			path.getElements().add(new LineTo(targetX, targetY));
-			
+
 			// animation stuff
 			PathTransition pathTransition = new PathTransition();
 			pathTransition.setDuration(Duration.millis(1000));
@@ -149,9 +157,42 @@ public class World {
 			pathTransition.play();
 		}
 	}
-	
-	private void size(Entity entity, int x, int y) {
-		// TODO
+
+	/**
+	 * Changes size of entity to given scale. <br />
+	 * For example, calling size(person, 2, 1) will make the person twice as wide as the original.
+	 * 
+	 * @param entity
+	 *            entity being resized
+	 * @param x
+	 *            the x scale to resize by
+	 * @param y
+	 *            the y scale to resize by
+	 */
+	private void size(Entity entity, double x, double y) {
+		if (entity != null) {
+			ImageView imageView = entityMap.get(entity);
+
+			double fromX = 1, fromY = 1;
+
+			// update info values and retrieve old scale if there is one
+			if (entity.getInfo().size == null) {
+				entity.getInfo().size = new Size(x, y);
+			} else {
+				fromX = entity.getInfo().size.x;
+				fromY = entity.getInfo().size.y;
+				entity.getInfo().size.x = x;
+				entity.getInfo().size.y = y;
+			}
+
+			// transition
+			ScaleTransition st = new ScaleTransition(Duration.millis(1000), imageView);
+			st.setFromX(fromX);
+			st.setFromY(fromY);
+			st.setToX(x);
+			st.setToY(x);
+			st.play();
+		}
 	}
 
 	/**
