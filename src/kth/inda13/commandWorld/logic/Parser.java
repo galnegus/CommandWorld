@@ -41,13 +41,13 @@ public class Parser {
 		String output;
 		int NUM = 3;
 		
-		String mainWord[] = new String[NUM]; // [0] agents  [1] events [2] intents
+		Word[] mainWord = new Word[NUM]; // [0] agents  [1] events [2] intents
 		@SuppressWarnings("unchecked")
-		LinkedList<String>[] description = new LinkedList[NUM];// [0] agents  [1] events [2] intents
+		LinkedList<Word>[] description = new LinkedList[NUM];// [0] agents  [1] events [2] intents
 		
 		//Initialize description
 		for (int i = 0; i < NUM; i++) {
-			 description[i]= new LinkedList<String>();	
+			 description[i]= new LinkedList<Word>();	
 		}
 		
 		//Divide string into words. Identify tags and store the words in their respective lists.
@@ -70,8 +70,8 @@ public class Parser {
 				case "i": {index = 2; break;}
 				}
 			}else{//Token is a word
-				description[index].add(token);
 				if(valid) valid = stringToWord.containsKey(token);
+				description[index].push(stringToWord.get(token));
 			}
 		}
 		//Store last word of array as the main word of the last tag
@@ -82,12 +82,9 @@ public class Parser {
 			//Case #1: creation. No agent, no intent.
 			if(mainWord[0] == null && mainWord[2] == null){
 				//sentence lacks agent and intent, create Entity
-				world.add(stringToWord.get(mainWord[1]));
-				//Description support
-//				while(!description[1].isEmpty())
-//					world.event(world.get(mainWord[1]), stringToWord.get(description[1].pop()));
+				world.create(mainWord[1], description[1]);
 			}else if(mainWord[0] == null){//Case #2: modification. No agent.
-				world.event(world.get(stringToWord.get(mainWord[2])), stringToWord.get(mainWord[1]));
+				world.event(mainWord[2], mainWord[1]);
 			}
 		}
 		//Temporal output to test parsing

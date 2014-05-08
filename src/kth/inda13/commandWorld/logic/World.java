@@ -2,6 +2,7 @@ package kth.inda13.commandWorld.logic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -48,13 +49,17 @@ public class World {
 	 * @param e
 	 *            the entity being added
 	 */
-	public void add(Word word) {
+	public void create(Word word, LinkedList<Word> description) {
 		Entity entity = new Entity(word);
 
 		Image image = entity.getInfo().image;
 		if (image != null) {
 			ImageView imageView = new ImageView(image);
 			entityMap.put(entity, imageView);
+			
+			for(Word w: description){
+				this.event(entity, w);
+			}
 
 			imagePane.getChildren().add(imageView);
 
@@ -128,6 +133,7 @@ public class World {
 
 	/**
 	 * Performs an event, if the word contains some data, it is applied to the intent.
+	 * Use this method if you want to perform several modifications on the same Entity.
 	 * 
 	 * @param intent
 	 *            the entity being altered
@@ -146,6 +152,20 @@ public class World {
 				size(intent, event.getInfo().size);
 			}
 		}
+	}
+	
+	
+	/**
+	 * Performs an event, if the word contains some data, it is applied to the intent.
+	 * Do no use this method if you want to perform several modifications on the same Entity.
+	 * 
+	 * @param intent
+	 *            the entity being altered
+	 * @param event
+	 *            the event being performed
+	 */
+	public void event(Word intent, Word event) {
+		this.event(this.get(intent), event);
 	}
 
 	/**
