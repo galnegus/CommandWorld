@@ -276,7 +276,7 @@ public class World {
 			// create the coloring effect
 			ColorInput colorInput = new ColorInput(0, 0, imageView.getImage().getWidth(), imageView.getImage()
 					.getHeight(), targetColor);
-			Blend blush = new Blend(BlendMode.MULTIPLY, colorInput, null);
+			Blend blush = new Blend(BlendMode.SCREEN, colorInput, null);
 			imageView.setEffect(blush);
 
 			// animate coloring effect from startColor to targetColor
