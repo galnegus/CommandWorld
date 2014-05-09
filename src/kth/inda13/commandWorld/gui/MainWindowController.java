@@ -82,19 +82,21 @@ public class MainWindowController {
 	@FXML
 	private void onSubmit() {
 		String input = inputTextField.getText();
-		String response = parser.Parse(input);
+		String response;
 		if (!input.isEmpty()) {
+			// Quit command
+			if(input.toLowerCase().equals("quit")) System.exit(0);
+			
 			// remove old input
 			inputTextField.clear();
+			
+			//Parse text and get reply
+			response = parser.Parse(input);
 
 			// print response & input
 			inputLabel.setText(input);
 			responseLabel.setText(response);
 			
-			// hardcoded descriptions test
-			if (input.equals("e small i red left person")) {
-				world.event(world.get(Word.PERSON, Arrays.asList(Word.RED, Word.LEFT)), Word.SMALL);
-			}
 		}
 
 		// this will return focus to the textfield if the submit button was used rather than text area + ENTER

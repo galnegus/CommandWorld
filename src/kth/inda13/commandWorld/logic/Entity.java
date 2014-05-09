@@ -1,5 +1,6 @@
 package kth.inda13.commandWorld.logic;
 
+import java.util.Deque;
 import java.util.List;
 
 import kth.inda13.commandWorld.data.Info;
@@ -42,7 +43,7 @@ public class Entity {
 	 * @param descriptions a list of words
 	 * @return true if it matches, false if there isn't
 	 */
-	public boolean matchesDescriptions(List<Word> descriptions) {
+	public boolean matchesDescriptions(Deque<Word> descriptions) {
 		for (Word word : descriptions) {
 			if (!info.contains(word.getInfo())) {
 				return false;

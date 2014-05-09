@@ -41,13 +41,12 @@ public class Parser {
 		String output;
 		int NUM = 3;
 		
-		Word[] mainWord = new Word[NUM]; // [0] agents  [1] events [2] intents
 		@SuppressWarnings("unchecked")
-		LinkedList<Word>[] description = new LinkedList[NUM];// [0] agents  [1] events [2] intents
+		LinkedList<Word>[] words = new LinkedList[NUM];// [0] agents  [1] events [2] intents
 		
 		//Initialize description
 		for (int i = 0; i < NUM; i++) {
-			 description[i]= new LinkedList<Word>();	
+			 words[i]= new LinkedList<Word>();	
 		}
 		
 		//Divide string into words. Identify tags and store the words in their respective lists.
@@ -60,8 +59,6 @@ public class Parser {
 			token = st.nextToken();
 			
 			if(token.matches("[a|e|i]")){//Token is a tag
-				//Store last word of array as the main word of the previous tag
-				if(index!=-1) mainWord[index] = description[index].pop();
 				
 				//Find out which one is the new tag
 				switch(token){
@@ -70,26 +67,16 @@ public class Parser {
 				case "i": {index = 2; break;}
 				}
 			}else{//Token is a word
+				//Check if still valid
 				if(valid) valid = stringToWord.containsKey(token);
-				description[index].push(stringToWord.get(token));
+				//Store information in proper list
+				words[index].push(stringToWord.get(token));
 			}
 		}
-		//Store last word of array as the main word of the last tag
-		if(index!=-1) mainWord[index] = description[index].pop();
-		
-		//World interaction
+		//If valid send parsed input to world. Otherwise return "invalid sentence".
 		if(valid){
-			//Case #1: creation. No agent, no intent.
-			if(mainWord[0] == null && mainWord[2] == null){
-				//sentence lacks agent and intent, create Entity
-				world.create(mainWord[1], description[1]);
-			}else if(mainWord[0] == null){//Case #2: modification. No agent.
-				world.event(mainWord[2], mainWord[1]);
-			}
-		}
-		//Temporal output to test parsing
-		if(valid){
-		output = String.format("Agent: %s, Event: %s, Intent: %s", mainWord[0], mainWord[1], mainWord[2]) ;
+			output = String.format("Agent: %s, Event: %s, Intent: %s", words[0].peek(), words[1].peek(), words[2].peek()) ;
+			world.sentence(words[0], words[1], words[2]);
 		}else{
 			output = "Invalid sentence.";
 		}

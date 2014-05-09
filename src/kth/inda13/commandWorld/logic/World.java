@@ -1,6 +1,7 @@
 package kth.inda13.commandWorld.logic;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,6 +27,7 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
+import kth.inda13.commandWorld.data.Info;
 import kth.inda13.commandWorld.data.Location;
 import kth.inda13.commandWorld.data.Size;
 import kth.inda13.commandWorld.data.Word;
@@ -42,6 +44,17 @@ public class World {
 		this.imagePane = imagePane;
 		rng = new Random();
 	}
+	
+	public void sentence(Deque<Word> agent, Deque<Word> event, Deque<Word> intent){		
+		
+		//Case #1: creation. No agent, no intent.
+		if(agent.isEmpty() && intent.isEmpty()){
+			//sentence lacks agent and intent, create Entity
+			this.create(event);
+		}else{
+			this.event(agent, event, intent);	
+		}
+	}
 
 	/**
 	 * add adds an entity to the world
@@ -49,18 +62,19 @@ public class World {
 	 * @param e
 	 *            the entity being added
 	 */
-	public void create(Word word, LinkedList<Word> description) {
-		Entity entity = new Entity(word);
+	public void create(Deque<Word> event) {
+		//Create the entity
+		Entity entity = new Entity(event.pop());
 
 		Image image = entity.getInfo().image;
 		if (image != null) {
 			ImageView imageView = new ImageView(image);
 			entityMap.put(entity, imageView);
 			
-			for(Word w: description){
-				this.event(entity, w);
-			}
-
+			//Apply descriptions to entities.
+			this.event(null, event ,entity);
+			
+			// Add image to UI-embedded control.
 			imagePane.getChildren().add(imageView);
 
 			// fade in entity to visibility
@@ -107,19 +121,21 @@ public class World {
 	 *            a list of words that describes the entity
 	 * @return the entity, or null if no such entity exists
 	 */
-	public Entity get(Word entity, List<Word> descriptions) {
+	public Entity get(Deque<Word> entityWords) {
 		List<Entity> results = new ArrayList<Entity>();
 		
+		if(entityWords == null || entityWords.isEmpty()) return null;
+			
+		Word toGet = entityWords.pop();
+		
 		for (Entity e : entityMap.keySet()) {
-			if (e.getWord() == entity && e.matchesDescriptions(descriptions)) {
+			if (e.getWord() == toGet && e.matchesDescriptions(entityWords)) {
 				results.add(e);
 			}
 		}
 		
-		if (!results.isEmpty()) {
-			return results.get(rng.nextInt(results.size()));
-		}
-		return null;
+		if (results.isEmpty()) return null;
+		else  return results.get(rng.nextInt(results.size()));
 	}
 
 	/**
@@ -140,16 +156,15 @@ public class World {
 	 * @param event
 	 *            the event being performed
 	 */
-	public void event(Entity intent, Word event) {
-		if (intent != null && event != null) {
-			if (event.getInfo().color != null) {
-				color(intent, event.getInfo().color);
-			}
-			if (event.getInfo().location != null) {
-				move(intent, event.getInfo().location);
-			}
-			if (event.getInfo().size != null) {
-				size(intent, event.getInfo().size);
+	public void event(Entity agent, Deque<Word> event, Entity intent) {
+		if(intent == null) System.out.println("Failed");
+		while (!event.isEmpty()) {
+			Info info = event.pop().getInfo();
+			if (intent != null && event != null) {
+				//Change properties inside the object
+				if (info.color != null) color(intent, info.color);
+				if (info.location != null) move(intent, info.location);
+				if (info.size != null) size(intent, info.size);
 			}
 		}
 	}
@@ -164,8 +179,8 @@ public class World {
 	 * @param event
 	 *            the event being performed
 	 */
-	public void event(Word intent, Word event) {
-		this.event(this.get(intent), event);
+	public void event(Deque<Word> agent, Deque<Word> event, Deque<Word> intent) {
+		this.event(this.get(agent), event, this.get(intent));
 	}
 
 	/**
