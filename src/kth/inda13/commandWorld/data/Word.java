@@ -12,8 +12,8 @@ import javafx.scene.paint.Color;
  */
 public enum Word {
 	PERSON(new Image("img/person.png")),
-//	DOG,
-//	CAT,
+	MONKEY(new Image("img/MONKEY.png")),
+//	CAT(new Image("img/.png")),
 	UP(new Location(0, -100)),
 	RIGHT(new Location(200, 0)),
 	DOWN(new Location(0, 100)),
