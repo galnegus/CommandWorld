@@ -62,7 +62,7 @@ public class World {
 	 * @param e
 	 *            the entity being added
 	 */
-	public void create(Deque<Word> event) {
+	private void create(Deque<Word> event) {
 		//Create the entity
 		Entity entity = new Entity(event.pop());
 
@@ -87,28 +87,6 @@ public class World {
 	}
 
 	/**
-	 * get returns a random entity from the World that matches the given word.
-	 * 
-	 * @param entity
-	 *            the word that the entity is created from
-	 * @return the entity, or null if no such entity exists
-	 */
-	public Entity get(Word entity) {
-		List<Entity> results = new ArrayList<Entity>();
-		
-		for (Entity e : entityMap.keySet()) {
-			if (e.getWord() == entity) {
-				results.add(e);
-			}
-		}
-		
-		if (!results.isEmpty()) {
-			return results.get(rng.nextInt(results.size()));
-		}
-		return null;
-	}
-
-	/**
 	 * get returns a random entity from the World that matches the given word and the given descriptions. <br />
 	 * <br />
 	 * For example, this method could be called with get(Word.PERSON, Arrays.asList(Word.RED, Word.SMALL)), which would
@@ -121,7 +99,7 @@ public class World {
 	 *            a list of words that describes the entity
 	 * @return the entity, or null if no such entity exists
 	 */
-	public Entity get(Deque<Word> entityWords) {
+	private Entity get(Deque<Word> entityWords) {
 		List<Entity> results = new ArrayList<Entity>();
 		
 		if(entityWords == null || entityWords.isEmpty()) return null;
@@ -156,7 +134,7 @@ public class World {
 	 * @param event
 	 *            the event being performed
 	 */
-	public void event(Entity agent, Deque<Word> event, Entity intent) {
+	private void event(Entity agent, Deque<Word> event, Entity intent) {
 		if(intent == null) System.out.println("Failed");
 		while (!event.isEmpty()) {
 			Info info = event.pop().getInfo();
@@ -179,7 +157,7 @@ public class World {
 	 * @param event
 	 *            the event being performed
 	 */
-	public void event(Deque<Word> agent, Deque<Word> event, Deque<Word> intent) {
+	private void event(Deque<Word> agent, Deque<Word> event, Deque<Word> intent) {
 		this.event(this.get(agent), event, this.get(intent));
 	}
 
