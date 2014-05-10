@@ -3,7 +3,6 @@ package kth.inda13.commandWorld.logic;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -135,19 +134,26 @@ public class World {
 	 *            the event being performed
 	 */
 	private void event(Entity agent, Deque<Word> event, Entity intent) {
-		if(intent == null) System.out.println("Failed");
 		while (!event.isEmpty()) {
 			Info info = event.pop().getInfo();
 			if (intent != null && event != null) {
-				//Change properties inside the object
+				
+				//Get the agent to the intent 
+				//(I suppose all actions require the agent to be by the intent)
+				if(agent != null){
+					move(agent, intent.getInfo().location);
+				}
+				
+				//Change the properties of the intent
 				if (info.color != null) color(intent, info.color);
 				if (info.location != null) move(intent, info.location);
 				if (info.size != null) size(intent, info.size);
+				
 			}
+			
 		}
 	}
-	
-	
+
 	/**
 	 * Performs an event, if the word contains some data, it is applied to the intent.
 	 * Do no use this method if you want to perform several modifications on the same Entity.
@@ -159,6 +165,11 @@ public class World {
 	 */
 	private void event(Deque<Word> agent, Deque<Word> event, Deque<Word> intent) {
 		this.event(this.get(agent), event, this.get(intent));
+	}
+	
+	private void wobble(Entity agent) {
+		
+		
 	}
 
 	/**
