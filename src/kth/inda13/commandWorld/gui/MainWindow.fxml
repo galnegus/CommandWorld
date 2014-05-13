@@ -15,7 +15,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="kth.inda13.commandWorld.gui.MainWindowController">
 	<StackPane id="output-image-pane" fx:id="outputImagePane" prefHeight="400" prefWidth="800" VBox.vgrow="ALWAYS">
 		
-		<ImageView fx:id="backgroundImage">
+		<ImageView fx:id="backgroundImage" managed="false">
 			<image>
 				<Image url="img/background.jpg" />
 			</image>

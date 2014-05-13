@@ -47,8 +47,7 @@ public class MainWindowController {
 	 */
 	@FXML
 	private void initialize() {
-		/* Bind background image size to size of outputImagePane
-     NOTE: This will act funny if window is resizable */
+		// Bind background image size to size of outputImagePane
 		backgroundImage.fitWidthProperty().bind(outputImagePane.widthProperty());
 		backgroundImage.fitHeightProperty().bind(outputImagePane.heightProperty());
 		
