@@ -3,7 +3,7 @@
 }
 
 #output-image-pane {
-	-fx-padding: 10;
+
 }
 
 .button {
@@ -29,6 +29,8 @@
 	-fx-font-weight: bold;
 	
 	-fx-padding: 5 15;
+	-fx-translate-x: -10;
+	-fx-translate-y: 10;
 }
 
 #response-grid-pane {

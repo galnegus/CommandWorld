@@ -20,6 +20,7 @@ public class MainWindow extends Application {
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("main.css").toExternalForm());
 			primaryStage.setScene(scene);
+			primaryStage.setResizable(false);
 			
 			primaryStage.show();
 		} catch(Exception e) { //Something has gone wrong making the window. 

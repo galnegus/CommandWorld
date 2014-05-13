@@ -14,6 +14,13 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="kth.inda13.commandWorld.gui.MainWindowController">
 	<StackPane id="output-image-pane" fx:id="outputImagePane" prefHeight="400" prefWidth="800" VBox.vgrow="ALWAYS">
+		
+		<ImageView fx:id="backgroundImage">
+			<image>
+				<Image url="img/background.jpg" />
+			</image>
+		</ImageView>
+		
 		<Button id="help-button" text="?" onAction="#helpButton" StackPane.alignment="TOP_RIGHT" />
 	</StackPane>
 	

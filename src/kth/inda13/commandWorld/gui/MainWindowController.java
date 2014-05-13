@@ -2,6 +2,7 @@ package kth.inda13.commandWorld.gui;
 
 import java.util.Arrays;
 
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,6 +25,9 @@ public class MainWindowController {
 	private StackPane outputImagePane;
 	
 	@FXML
+	private ImageView backgroundImage;
+	
+	@FXML
 	private Label inputLabel;
 	
 	@FXML
@@ -40,11 +44,10 @@ public class MainWindowController {
 	 */
 	@FXML
 	private void initialize() {
-		//Set background image
-		Image image = new Image("img/background.jpg");
-        ImageView imageView = new ImageView();
-        imageView.setImage(image);
-		outputImagePane.getChildren().add(imageView);
+		/* Bind background image size to size of outputImagePane
+     NOTE: This will act funny if window is resizable */
+		backgroundImage.fitWidthProperty().bind(outputImagePane.widthProperty());
+		backgroundImage.fitHeightProperty().bind(outputImagePane.heightProperty());
 		
 		//Create world
 		world = new World(outputImagePane);
