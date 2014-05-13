@@ -101,6 +101,12 @@ public class MainWindowController {
 			if (input.equals("e small i red left person")) {
 				world.event(world.get(Word.PERSON, Arrays.asList(Word.RED, Word.LEFT)), Word.SMALL);
 			}
+			if (input.equals("a monkey e eat i tiger")) {
+				world.eat(world.get(Word.MONKEY), world.get(Word.TIGER));
+			}
+			if (input.equals("e size")) {
+				world.printSize();
+			}
 		}
 
 		// this will return focus to the textfield if the submit button was used rather than text area + ENTER

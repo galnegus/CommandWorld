@@ -2,21 +2,27 @@ package kth.inda13.commandWorld.logic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.ParallelTransition;
 import javafx.animation.PathTransition;
+import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
+import javafx.scene.Node;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorInput;
@@ -24,6 +30,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -35,7 +42,7 @@ import kth.inda13.commandWorld.data.Word;
 public class World {
 	private Map<Entity, ImageView> entityMap;
 	private StackPane imagePane;
-	
+
 	// used for picking random entities when multiple are available
 	private Random rng;
 
@@ -58,8 +65,8 @@ public class World {
 		if (image != null) {
 			ImageView imageView = new ImageView(image);
 			entityMap.put(entity, imageView);
-			
-			for(Word w: description){
+
+			for (Word w : description) {
 				this.event(entity, w);
 			}
 
@@ -83,13 +90,13 @@ public class World {
 	 */
 	public Entity get(Word entity) {
 		List<Entity> results = new ArrayList<Entity>();
-		
+
 		for (Entity e : entityMap.keySet()) {
 			if (e.getWord() == entity) {
 				results.add(e);
 			}
 		}
-		
+
 		if (!results.isEmpty()) {
 			return results.get(rng.nextInt(results.size()));
 		}
@@ -111,13 +118,13 @@ public class World {
 	 */
 	public Entity get(Word entity, List<Word> descriptions) {
 		List<Entity> results = new ArrayList<Entity>();
-		
+
 		for (Entity e : entityMap.keySet()) {
 			if (e.getWord() == entity && e.matchesDescriptions(descriptions)) {
 				results.add(e);
 			}
 		}
-		
+
 		if (!results.isEmpty()) {
 			return results.get(rng.nextInt(results.size()));
 		}
@@ -134,8 +141,8 @@ public class World {
 	}
 
 	/**
-	 * Performs an event, if the word contains some data, it is applied to the intent.
-	 * Use this method if you want to perform several modifications on the same Entity.
+	 * Performs an event, if the word contains some data, it is applied to the intent. Use this method if you want to
+	 * perform several modifications on the same Entity.
 	 * 
 	 * @param intent
 	 *            the entity being altered
@@ -155,11 +162,10 @@ public class World {
 			}
 		}
 	}
-	
-	
+
 	/**
-	 * Performs an event, if the word contains some data, it is applied to the intent.
-	 * Do no use this method if you want to perform several modifications on the same Entity.
+	 * Performs an event, if the word contains some data, it is applied to the intent. Do no use this method if you want
+	 * to perform several modifications on the same Entity.
 	 * 
 	 * @param intent
 	 *            the entity being altered
@@ -177,54 +183,85 @@ public class World {
 	 * 
 	 * @param entity
 	 *            entity to move
-	 * @param x
-	 *            amount of pixels to move entity by horizontally
-	 * @param y
-	 *            amount of pixels to move entity by vertically
+	 * @param location
+	 *            location that entity will be moved to
 	 */
 	private void move(Entity entity, Location location) {
 		if (entity != null) {
-			entity.getInfo().location = location;
-
-			ImageView imageView = entityMap.get(entity);
-
-			// for some reason coordinate systems when creating and moving nodes are different
-			double widthOffset = entity.getInfo().image.getWidth() / 2.0;
-			double heightOffset = entity.getInfo().image.getHeight() / 2.0;
-
-			// starting position for animation
-			double startX = imageView.getTranslateX() + widthOffset;
-			double startY = imageView.getTranslateY() + heightOffset;
-
-			// target position for animation
-			double targetX = location.x + widthOffset;
-			double targetY = location.y + heightOffset;
-
-			// path from start to finish
-			Path path = new Path();
-			path.getElements().add(new MoveTo(startX, startY));
-			path.getElements().add(new LineTo(targetX, targetY));
-
-			// animation stuff
-			PathTransition pathTransition = new PathTransition();
-			pathTransition.setDuration(Duration.millis(1000));
-			pathTransition.setNode(imageView);
-			pathTransition.setPath(path);
-			pathTransition.setInterpolator(Interpolator.EASE_BOTH);
+			PathTransition pathTransition = prepareMove(entity, location);
 			pathTransition.play();
 		}
 	}
 
 	/**
+	 * Does all the legwork for move, returns a reusable Animation object that could be useful for other events (see
+	 * eat).
+	 * 
+	 * @param entity
+	 *            entity to move
+	 * @param location
+	 *            location that entity will be moved to
+	 * @return a pathTransition object
+	 */
+	private PathTransition prepareMove(Entity entity, Location location) {
+		if (location == null) {
+			location = Word.CENTER.getInfo().location;
+		}
+
+		entity.getInfo().location = location;
+
+		ImageView imageView = entityMap.get(entity);
+
+		// for some reason coordinate systems when creating and moving nodes are different
+		double widthOffset = entity.getInfo().image.getWidth() / 2.0;
+		double heightOffset = entity.getInfo().image.getHeight() / 2.0;
+
+		// starting position for animation
+		double startX = imageView.getTranslateX() + widthOffset;
+		double startY = imageView.getTranslateY() + heightOffset;
+
+		// target position for animation
+		double targetX = location.x + widthOffset;
+		double targetY = location.y + heightOffset;
+
+		// path from start to finish
+		Path path = new Path();
+		path.getElements().add(new MoveTo(startX, startY));
+
+		// debug stuff
+		// System.err.println("start: " + imageView.getTranslateX() + "," + imageView.getTranslateY() + ", target: " +
+		// targetX + "," + targetY);
+
+		// do not do a line path if start == target, it will cause entity to disappear for some weird reason
+		// same thing will also happens if at any point the path intersects with the starting point
+		if (startX != targetX || startY != targetY) {
+			path.getElements().add(new LineTo(targetX, targetY));
+		} else {
+			double x1 = targetX - 100;
+			double y1 = targetY + 100;
+			double x2 = targetX + 100;
+			double y2 = targetY + 100;
+			path.getElements().add(new CubicCurveTo(x1, y1, x2, y2, targetX, targetY));
+		}
+
+		// animation stuff
+		PathTransition pathTransition = new PathTransition();
+		pathTransition.setDuration(Duration.millis(1000));
+		pathTransition.setNode(imageView);
+		pathTransition.setPath(path);
+		pathTransition.setInterpolator(Interpolator.EASE_BOTH);
+
+		return pathTransition;
+	}
+
+	/**
 	 * Changes size of entity to given scale. <br />
-	 * For example, calling size(person, 2, 1) will make the person twice as wide as the original.
+	 * For example, calling size(person, Word.THICK.getInfo().size) will make the person twice as wide as the original.
 	 * 
 	 * @param entity
 	 *            entity being resized
-	 * @param toX
-	 *            the x scale to resize by
-	 * @param toY
-	 *            the y scale to resize by
+	 * @param size
+	 *            the new size of the entity
 	 */
 	private void size(Entity entity, Size size) {
 		if (entity != null) {
@@ -293,29 +330,119 @@ public class World {
 			imageView.setCacheHint(CacheHint.SPEED);
 		}
 	}
-	
+
+	/**
+	 * Shakes the entity forward slightly.
+	 * 
+	 * @param entity
+	 *            entity being shaked
+	 */
+	public void shake(Entity entity) {
+		if (entity != null) {
+			RotateTransition rt = prepareShake(entity);
+
+			rt.play();
+		}
+
+	}
+
+	/**
+	 * Does legwork for shake. Returns Animation object useful to other events (see eat).
+	 * 
+	 * @param entity
+	 *            entity being shaked
+	 * @return object containing cool animation
+	 */
+	public RotateTransition prepareShake(Entity entity) {
+		ImageView imageView = entityMap.get(entity);
+
+		RotateTransition rt = new RotateTransition(Duration.millis(100), imageView);
+		rt.setByAngle(90);
+		rt.setCycleCount(10);
+		rt.setAutoReverse(true);
+
+		return rt;
+	}
+
+	/**
+	 * One entity moves to another entity, then eats it. Uses other events to make it happen.
+	 * 
+	 * @param agent
+	 *            entity getting fed
+	 * @param intent
+	 *            entity getting eaten
+	 */
+	public void eat(final Entity agent, final Entity intent) {
+		if (agent != null && intent != null) {
+			PathTransition move = prepareMove(agent, intent.getInfo().location);
+
+			final RotateTransition shake = prepareShake(agent);
+			final FadeTransition remove = prepareRemove(intent);
+			move.setOnFinished(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent arg0) {
+					shake.play();
+					remove.play();
+				}
+			});
+			move.play();
+
+		}
+	}
+
 	/**
 	 * clear fades out all entities from the world and then removes them from the imagePane and the entityMap.
 	 */
 	public void clear() {
-		for (ImageView imgView : entityMap.values()) {
-			FadeTransition ft = new FadeTransition(Duration.millis(1000), imgView);
-			ft.setFromValue(1);
-			ft.setToValue(0);
-			ft.play();
-			
-			final ImageView tmpImg = imgView;
-			ft.setOnFinished(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent arg0) {
-					imagePane.getChildren().remove(tmpImg);
-				}
-				
-			});
-			
-			
+		/*
+		 * a new hashset copy must be created for iteration, otherwise a ConcurrentModificiationException might be
+		 * thrown when an element is removed
+		 */
+		for (Entity entity : new HashSet<Entity>(entityMap.keySet())) {
+			remove(entity);
 		}
-		entityMap.clear();
+	}
+
+	/**
+	 * remove fades out an entity and removes it from the imagePane once it has faded completely. <br />
+	 * The entity is also removed from the entityMap once it is removed from the imagePane.
+	 * 
+	 * @param entity
+	 *            the entity being removed
+	 */
+	private void remove(final Entity entity) {
+		if (entity != null) {
+			FadeTransition ft = prepareRemove(entity);
+			ft.play();
+		}
+	}
+
+	/**
+	 * Does hard work for remove. Used in other events (see eat).
+	 * 
+	 * @param entity
+	 *            event being removed
+	 * @return an animation object.
+	 */
+	private FadeTransition prepareRemove(final Entity entity) {
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), entityMap.get(entity));
+		ft.setFromValue(1);
+		ft.setToValue(0);
+		ft.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				imagePane.getChildren().remove(entityMap.get(entity));
+				entityMap.remove(entity);
+			}
+		});
+
+		return ft;
+	}
+
+	/**
+	 * prints size of entityMap in console, useful for debugging.
+	 */
+	public void printSize() {
+		System.out.println(entityMap.size());
 	}
 }

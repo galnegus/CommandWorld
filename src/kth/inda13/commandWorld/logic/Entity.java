@@ -60,5 +60,8 @@ public class Entity {
 	public Word getWord() {
 		return word;
 	}
-
+	
+	public String toString() {
+		return "WORD: " + word;
+	}
 }

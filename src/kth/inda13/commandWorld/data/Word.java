@@ -20,6 +20,7 @@ public enum Word {
 	RIGHT(new Location(200, 0)),
 	DOWN(new Location(0, 100)),
 	LEFT(new Location(-200, 0)),
+	CENTER(new Location(0, 0)),
 	BIG(new Size(2, 2)), 
 	SMALL(new Size(0.5, 0.5)), 
 	THIN(new Size(0.5, 1)), 
