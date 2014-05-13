@@ -35,5 +35,6 @@
 	<HBox id="input-hbox" spacing="10">
 		<TextField HBox.hgrow="ALWAYS" id="input-text-field" fx:id="inputTextField" onAction="#onSubmit" />
 		<Button text="Enter" id="input-submit-button" fx:id="inputSubmitButton" onAction="#onSubmit" />
+		<Button text="Clear" id="input-clear-button" fx:id="inputClearButton" onAction="#onClear" />
 	</HBox>
 </VBox>

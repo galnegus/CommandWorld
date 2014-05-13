@@ -38,6 +38,9 @@ public class MainWindowController {
 
 	@FXML
 	private Button inputSubmitButton;
+	
+	@FXML
+	private Button inputClearButton;
 
 	/**
 	 * This method is called when the window is initializing.
@@ -101,6 +104,16 @@ public class MainWindowController {
 		}
 
 		// this will return focus to the textfield if the submit button was used rather than text area + ENTER
+		inputTextField.requestFocus();
+	}
+	
+	/**
+	 * onClear removes all entities from the world.
+	 */
+	@FXML
+	private void onClear() {
+		world.clear();
+		
 		inputTextField.requestFocus();
 	}
 }

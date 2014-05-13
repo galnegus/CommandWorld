@@ -14,6 +14,8 @@ import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
@@ -290,5 +292,30 @@ public class World {
 			imageView.setCache(true);
 			imageView.setCacheHint(CacheHint.SPEED);
 		}
+	}
+	
+	/**
+	 * clear fades out all entities from the world and then removes them from the imagePane and the entityMap.
+	 */
+	public void clear() {
+		for (ImageView imgView : entityMap.values()) {
+			FadeTransition ft = new FadeTransition(Duration.millis(1000), imgView);
+			ft.setFromValue(1);
+			ft.setToValue(0);
+			ft.play();
+			
+			final ImageView tmpImg = imgView;
+			ft.setOnFinished(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					imagePane.getChildren().remove(tmpImg);
+				}
+				
+			});
+			
+			
+		}
+		entityMap.clear();
 	}
 }
