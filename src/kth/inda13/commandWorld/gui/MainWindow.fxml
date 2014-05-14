@@ -24,17 +24,20 @@
 		<Button id="help-button" text="?" onAction="#helpButton" StackPane.alignment="TOP_RIGHT" />
 	</StackPane>
 	
-	<GridPane id="response-grid-pane" hgap="10" vgap="5">
-		<Label text="Input:" styleClass="cool-label" GridPane.halignment="RIGHT" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-		<Label text="Response:" styleClass="cool-label" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-		<Separator orientation="VERTICAL" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.rowSpan="2" />
-		<Label text="(nothing)" fx:id="inputLabel" GridPane.rowIndex="0" GridPane.columnIndex="2" />
-		<Label text="(nothing)" fx:id="responseLabel" GridPane.rowIndex="1" GridPane.columnIndex="2" />
-	</GridPane>
+	<HBox>
+		<GridPane id="response-grid-pane" hgap="10" vgap="5" HBox.grow="ALWAYS">
+			<Label text="Input:" styleClass="cool-label" GridPane.halignment="RIGHT" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+			<Label text="Response:" styleClass="cool-label" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+			<Separator orientation="VERTICAL" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.rowSpan="2" />
+			<Label text="(nothing)" fx:id="inputLabel" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+			<Label text="(nothing)" fx:id="responseLabel" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+		</GridPane>
+		<Button text="Clear" id="input-clear-button" fx:id="inputClearButton" onAction="#onClear" />
+	</HBox>
 
 	<HBox id="input-hbox" spacing="10">
 		<TextField HBox.hgrow="ALWAYS" id="input-text-field" fx:id="inputTextField" onAction="#onSubmit" />
 		<Button text="Enter" id="input-submit-button" fx:id="inputSubmitButton" onAction="#onSubmit" />
-		<Button text="Clear" id="input-clear-button" fx:id="inputClearButton" onAction="#onClear" />
+		
 	</HBox>
 </VBox>
