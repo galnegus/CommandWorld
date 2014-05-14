@@ -1,6 +1,7 @@
 package kth.inda13.commandWorld.logic;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -51,6 +52,10 @@ public class World {
 		this.imagePane = imagePane;
 		rng = new Random();
 	}
+	
+	public void sentence(Deque<Word> agent, Deque<Word> event, Deque<Word> intent){
+		
+	}
 
 	/**
 	 * add adds an entity to the world
@@ -60,24 +65,31 @@ public class World {
 	 */
 	public void create(Word word, LinkedList<Word> description) {
 		Entity entity = new Entity(word);
-
-		Image image = entity.getInfo().image;
-		if (image != null) {
-			ImageView imageView = new ImageView(image);
-			entityMap.put(entity, imageView);
-
-			for (Word w : description) {
-				this.event(entity, w);
-			}
-
-			imagePane.getChildren().add(imageView);
-
-			// fade in entity to visibility
-			FadeTransition ft = new FadeTransition(Duration.millis(1000), imageView);
-			ft.setFromValue(0.0);
-			ft.setToValue(1);
-			ft.play();
+		
+		if (entity.getInfo().image == null) {
+			entity.getInfo().image = new Image("img/questionMark.png");
 		}
+		
+		Image image = entity.getInfo().image;
+		
+		ImageView imageView = new ImageView(image);
+		entityMap.put(entity, imageView);
+
+		for (Word w : description) {
+			this.event(entity, w);
+		}
+		System.out.println(entity);
+		this.event(entity, word);
+
+		imagePane.getChildren().add(imageView);
+
+		// fade in entity to visibility
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), imageView);
+		ft.setFromValue(0.0);
+		ft.setToValue(1);
+		ft.play();
+		
+
 
 	}
 

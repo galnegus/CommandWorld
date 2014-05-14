@@ -22,18 +22,16 @@
 		</ImageView>
 		
 		<Button id="help-button" text="?" onAction="#helpButton" StackPane.alignment="TOP_RIGHT" />
+		<Button text="Clear" id="clear-button" fx:id="clearButton" onAction="#onClear" StackPane.alignment="TOP_LEFT"/>
 	</StackPane>
 	
-	<HBox>
-		<GridPane id="response-grid-pane" hgap="10" vgap="5" HBox.grow="ALWAYS">
-			<Label text="Input:" styleClass="cool-label" GridPane.halignment="RIGHT" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-			<Label text="Response:" styleClass="cool-label" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-			<Separator orientation="VERTICAL" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.rowSpan="2" />
-			<Label text="(nothing)" fx:id="inputLabel" GridPane.rowIndex="0" GridPane.columnIndex="2" />
-			<Label text="(nothing)" fx:id="responseLabel" GridPane.rowIndex="1" GridPane.columnIndex="2" />
-		</GridPane>
-		<Button text="Clear" id="input-clear-button" fx:id="inputClearButton" onAction="#onClear" />
-	</HBox>
+	<GridPane id="response-grid-pane" hgap="10" vgap="5" HBox.hgrow="ALWAYS">
+		<Label text="Input:" styleClass="cool-label" GridPane.halignment="RIGHT" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+		<Label text="Response:" styleClass="cool-label" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+		<Separator orientation="VERTICAL" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.rowSpan="2" />
+		<Label text="(nothing)" fx:id="inputLabel" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+		<Label text="(nothing)" fx:id="responseLabel" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+	</GridPane>
 
 	<HBox id="input-hbox" spacing="10">
 		<TextField HBox.hgrow="ALWAYS" id="input-text-field" fx:id="inputTextField" onAction="#onSubmit" />

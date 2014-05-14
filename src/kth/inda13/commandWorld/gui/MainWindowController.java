@@ -40,7 +40,7 @@ public class MainWindowController {
 	private Button inputSubmitButton;
 	
 	@FXML
-	private Button inputClearButton;
+	private Button clearButton;
 
 	/**
 	 * This method is called when the window is initializing.

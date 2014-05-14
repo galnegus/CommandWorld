@@ -72,10 +72,12 @@
 	-fx-padding: 10 20;
 }
 
-#input-clear-button {
-	-fx-padding: 10 20;
+#clear-button {
+	-fx-padding: 5 15;
+	-fx-translate-x: 10;
+	-fx-translate-y: 10;
 }
 
-#input-text-field, #input-submit-button, #input-clear-button {
+#input-text-field, #input-submit-button, #clear-button {
 	-fx-font-size: 20;
 }

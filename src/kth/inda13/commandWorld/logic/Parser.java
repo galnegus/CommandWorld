@@ -71,11 +71,13 @@ public class Parser {
 				}
 			}else{//Token is a word
 				if(valid) valid = stringToWord.containsKey(token);
-				description[index].push(stringToWord.get(token));
+				if(index!= -1) description[index].push(stringToWord.get(token));
+				else valid = false;
 			}
 		}
 		//Store last word of array as the main word of the last tag
-		if(index!=-1) mainWord[index] = description[index].pop();
+		if(index!=-1 && !description[index].isEmpty()) mainWord[index] = description[index].pop();
+		else valid = false;
 		
 		//World interaction
 		if(valid){
