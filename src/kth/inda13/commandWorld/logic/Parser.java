@@ -15,20 +15,20 @@ import kth.inda13.commandWorld.data.Word;
  *
  */
 public class Parser {
-	
+
 
 	final private World world;
 	final private HashMap<String, Word> stringToWord;
-	
+
 	public Parser(World world){
 		this.world= world;
-		
+
 		//World interaction
 		stringToWord = new HashMap<String, Word>();
 		for(Word w : Word.values()) 
 			stringToWord.put(w.toString().toLowerCase(), w);
 	}
-	
+
 	/**
 	 * Parses Aeiol strings in order to determine Agent, Event and Intent.
 	 * In a future it will also modify the World after the inpu sentence.
@@ -40,29 +40,26 @@ public class Parser {
 		//Variable declaration
 		String output;
 		int NUM = 3;
-		
-		Word[] mainWord = new Word[NUM]; // [0] agents  [1] events [2] intents
+
 		@SuppressWarnings("unchecked")
-		LinkedList<Word>[] description = new LinkedList[NUM];// [0] agents  [1] events [2] intents
-		
+		LinkedList<Word>[] words = new LinkedList[NUM];// [0] agents  [1] events [2] intents
+
 		//Initialize description
 		for (int i = 0; i < NUM; i++) {
-			 description[i]= new LinkedList<Word>();	
+			 words[i]= new LinkedList<Word>();	
 		}
-		
+
 		//Divide string into words. Identify tags and store the words in their respective lists.
 		StringTokenizer st = new StringTokenizer(input.toLowerCase());
 		int index = -1;
 		Boolean valid = true; // Invariant: true as long all words exist in Word
 		String token;
-		
+
 		while(st.hasMoreTokens()){
 			token = st.nextToken();
-			
+
 			if(token.matches("[a|e|i]")){//Token is a tag
-				//Store last word of array as the main word of the previous tag
-				if(index!=-1) mainWord[index] = description[index].pop();
-				
+
 				//Find out which one is the new tag
 				switch(token){
 				case "a": {index = 0; break;}
@@ -70,37 +67,19 @@ public class Parser {
 				case "i": {index = 2; break;}
 				}
 			}else{//Token is a word
+				//Check if still valid
 				if(valid) valid = stringToWord.containsKey(token);
-				if(index!= -1) description[index].push(stringToWord.get(token));
-				else valid = false;
+				//Store information in proper list
+				words[index].push(stringToWord.get(token));
 			}
 		}
-		//Store last word of array as the main word of the last tag
-		if(index!=-1 && !description[index].isEmpty()) mainWord[index] = description[index].pop();
-		else valid = false;
-		
-		//World interaction
+		//If valid send parsed input to world. Otherwise return "invalid sentence".
 		if(valid){
-			//Case #1: creation. No agent, no intent.
-			if(mainWord[0] == null && mainWord[2] == null){
-				//sentence lacks agent and intent, create Entity
-				world.create(mainWord[1], description[1]);
-			}else if(mainWord[0] == null){//Case #2: modification. No agent.
-				world.event(mainWord[2], mainWord[1]);
-			}
-		}
-		//Temporal output to test parsing
-		if(valid){
-		output = String.format("Agent: %s, Event: %s, Intent: %s", mainWord[0], mainWord[1], mainWord[2]) ;
+			output = String.format("Agent: %s, Event: %s, Intent: %s", words[0].peek(), words[1].peek(), words[2].peek()) ;
+			world.sentence(words[0], words[1], words[2]);
 		}else{
 			output = "Invalid sentence.";
 		}
 		return output;
 	}
-	
-	public Word fetchWord(String s){
-		
-		return null;
-	}
-	
 }

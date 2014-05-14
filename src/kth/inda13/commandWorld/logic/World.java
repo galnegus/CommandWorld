@@ -1,29 +1,23 @@
 package kth.inda13.commandWorld.logic;
 
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
-import javafx.animation.ParallelTransition;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
-import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
-import javafx.scene.Node;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorInput;
@@ -36,6 +30,7 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
+import kth.inda13.commandWorld.data.Info;
 import kth.inda13.commandWorld.data.Location;
 import kth.inda13.commandWorld.data.Size;
 import kth.inda13.commandWorld.data.Word;
@@ -53,8 +48,15 @@ public class World {
 		rng = new Random();
 	}
 	
-	public void sentence(Deque<Word> agent, Deque<Word> event, Deque<Word> intent){
-		
+	public void sentence(Deque<Word> agent, Deque<Word> event, Deque<Word> intent){		
+
+		//Case #1: creation. No agent, no intent.
+		if(agent.isEmpty() && intent.isEmpty()){
+			//sentence lacks agent and intent, create Entity
+			this.create(event);
+		}else{
+			this.event(agent, event, intent);	
+		}
 	}
 
 	/**
@@ -63,8 +65,9 @@ public class World {
 	 * @param e
 	 *            the entity being added
 	 */
-	public void create(Word word, LinkedList<Word> description) {
-		Entity entity = new Entity(word);
+	private void create(Deque<Word> event) {
+		//Create the entity
+		Entity entity = new Entity(event.peek());
 		
 		if (entity.getInfo().image == null) {
 			entity.getInfo().image = new Image("img/questionMark.png");
@@ -75,12 +78,10 @@ public class World {
 		ImageView imageView = new ImageView(image);
 		entityMap.put(entity, imageView);
 
-		for (Word w : description) {
-			this.event(entity, w);
-		}
-		System.out.println(entity);
-		this.event(entity, word);
+		//Apply descriptions to entities.
+		this.event(null, event ,entity);
 
+		// Add image to UI-embedded control.
 		imagePane.getChildren().add(imageView);
 
 		// fade in entity to visibility
@@ -88,31 +89,6 @@ public class World {
 		ft.setFromValue(0.0);
 		ft.setToValue(1);
 		ft.play();
-		
-
-
-	}
-
-	/**
-	 * get returns a random entity from the World that matches the given word.
-	 * 
-	 * @param entity
-	 *            the word that the entity is created from
-	 * @return the entity, or null if no such entity exists
-	 */
-	public Entity get(Word entity) {
-		List<Entity> results = new ArrayList<Entity>();
-
-		for (Entity e : entityMap.keySet()) {
-			if (e.getWord() == entity) {
-				results.add(e);
-			}
-		}
-
-		if (!results.isEmpty()) {
-			return results.get(rng.nextInt(results.size()));
-		}
-		return null;
 	}
 
 	/**
@@ -128,19 +104,21 @@ public class World {
 	 *            a list of words that describes the entity
 	 * @return the entity, or null if no such entity exists
 	 */
-	public Entity get(Word entity, List<Word> descriptions) {
+	private Entity get(Deque<Word> entityWords) {
 		List<Entity> results = new ArrayList<Entity>();
 
+		if(entityWords == null || entityWords.isEmpty()) return null;
+
+		Word toGet = entityWords.pop();
+
 		for (Entity e : entityMap.keySet()) {
-			if (e.getWord() == entity && e.matchesDescriptions(descriptions)) {
+			if (e.getWord() == toGet && e.matchesDescriptions(entityWords)) {
 				results.add(e);
 			}
 		}
 
-		if (!results.isEmpty()) {
-			return results.get(rng.nextInt(results.size()));
-		}
-		return null;
+		if (results.isEmpty()) return null;
+		else  return results.get(rng.nextInt(results.size()));
 	}
 
 	/**
@@ -153,39 +131,46 @@ public class World {
 	}
 
 	/**
-	 * Performs an event, if the word contains some data, it is applied to the intent. Use this method if you want to
-	 * perform several modifications on the same Entity.
+	 * Performs an event, if the word contains some data, it is applied to the intent.
+	 * Do no use this method if you want to perform several modifications on the same Entity.
 	 * 
 	 * @param intent
 	 *            the entity being altered
 	 * @param event
 	 *            the event being performed
 	 */
-	public void event(Entity intent, Word event) {
-		if (intent != null && event != null) {
-			if (event.getInfo().color != null) {
-				color(intent, event.getInfo().color);
-			}
-			if (event.getInfo().location != null) {
-				move(intent, event.getInfo().location);
-			}
-			if (event.getInfo().size != null) {
-				size(intent, event.getInfo().size);
-			}
-		}
+	private void event(Deque<Word> agent, Deque<Word> event, Deque<Word> intent) {
+		this.event(this.get(agent), event, this.get(intent));
 	}
 
 	/**
-	 * Performs an event, if the word contains some data, it is applied to the intent. Do no use this method if you want
-	 * to perform several modifications on the same Entity.
+	 * Performs an event, if the word contains some data, it is applied to the intent.
+	 * Use this method if you want to perform several modifications on the same Entity.
 	 * 
 	 * @param intent
 	 *            the entity being altered
 	 * @param event
 	 *            the event being performed
 	 */
-	public void event(Word intent, Word event) {
-		this.event(this.get(intent), event);
+	private void event(Entity agent, Deque<Word> event, Entity intent) {
+		while (!event.isEmpty()) {
+			Info info = event.pop().getInfo();
+			if (intent != null && event != null) {
+
+				//Get the agent to the intent 
+				//(I suppose all actions require the agent to be by the intent)
+				if(agent != null){
+					move(agent, intent.getInfo().location);
+				}
+
+				//Change the properties of the intent
+				if (info.color != null) color(intent, info.color);
+				if (info.location != null) move(intent, info.location);
+				if (info.size != null) size(intent, info.size);
+
+			}
+
+		}
 	}
 
 	/**
