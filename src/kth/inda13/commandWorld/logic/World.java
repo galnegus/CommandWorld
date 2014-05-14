@@ -47,15 +47,15 @@ public class World {
 		this.imagePane = imagePane;
 		rng = new Random();
 	}
-	
-	public void sentence(Deque<Word> agent, Deque<Word> event, Deque<Word> intent){		
 
-		//Case #1: creation. No agent, no intent.
-		if(agent.isEmpty() && intent.isEmpty()){
-			//sentence lacks agent and intent, create Entity
+	public void sentence(Deque<Word> agent, Deque<Word> event, Deque<Word> intent) {
+
+		// Case #1: creation. No agent, no intent.
+		if (agent.isEmpty() && intent.isEmpty()) {
+			// sentence lacks agent and intent, create Entity
 			this.create(event);
-		}else{
-			this.event(agent, event, intent);	
+		} else {
+			this.event(agent, event, intent);
 		}
 	}
 
@@ -66,20 +66,20 @@ public class World {
 	 *            the entity being added
 	 */
 	private void create(Deque<Word> event) {
-		//Create the entity
+		// Create the entity
 		Entity entity = new Entity(event.peek());
-		
+
 		if (entity.getInfo().image == null) {
 			entity.getInfo().image = new Image("img/questionMark.png");
 		}
-		
+
 		Image image = entity.getInfo().image;
-		
+
 		ImageView imageView = new ImageView(image);
 		entityMap.put(entity, imageView);
 
-		//Apply descriptions to entities.
-		this.event(null, event ,entity);
+		// Apply descriptions to entities.
+		this.event(null, event, entity);
 
 		// Add image to UI-embedded control.
 		imagePane.getChildren().add(imageView);
@@ -107,7 +107,8 @@ public class World {
 	private Entity get(Deque<Word> entityWords) {
 		List<Entity> results = new ArrayList<Entity>();
 
-		if(entityWords == null || entityWords.isEmpty()) return null;
+		if (entityWords == null || entityWords.isEmpty())
+			return null;
 
 		Word toGet = entityWords.pop();
 
@@ -117,22 +118,15 @@ public class World {
 			}
 		}
 
-		if (results.isEmpty()) return null;
-		else  return results.get(rng.nextInt(results.size()));
+		if (results.isEmpty())
+			return null;
+		else
+			return results.get(rng.nextInt(results.size()));
 	}
 
 	/**
-	 * size returns the number of entitites in the world.
-	 * 
-	 * @return the number of entities
-	 */
-	public int size() {
-		return entityMap.size();
-	}
-
-	/**
-	 * Performs an event, if the word contains some data, it is applied to the intent.
-	 * Do no use this method if you want to perform several modifications on the same Entity.
+	 * Performs an event, if the word contains some data, it is applied to the intent. Do no use this method if you want
+	 * to perform several modifications on the same Entity.
 	 * 
 	 * @param intent
 	 *            the entity being altered
@@ -144,30 +138,55 @@ public class World {
 	}
 
 	/**
-	 * Performs an event, if the word contains some data, it is applied to the intent.
-	 * Use this method if you want to perform several modifications on the same Entity.
+	 * Performs an event, if the word contains some data, it is applied to the intent. Use this method if you want to
+	 * perform several modifications on the same Entity.
 	 * 
 	 * @param intent
 	 *            the entity being altered
 	 * @param event
 	 *            the event being performed
 	 */
-	private void event(Entity agent, Deque<Word> event, Entity intent) {
+	private void event(final Entity agent, final Deque<Word> event, final Entity intent) {
+		if (intent != null && event != null) {
+			// Get the agent to the intent
+			// (I suppose all actions require the agent to be by the intent)
+			if (agent != null) {
+				PathTransition pt = prepareMove(agent, intent.getInfo().location);
+				pt.setOnFinished(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent arg0) {
+						executeEvents(agent, event, intent);
+					}
+				});
+				pt.play();
+			} else {
+				executeEvents(agent, event, intent);
+			}
+
+		}
+	}
+
+	/**
+	 * helper function for event, executes events.
+	 * 
+	 * @param agent
+	 * @param event
+	 * @param intent
+	 */
+	private void executeEvents(Entity agent, Deque<Word> event, Entity intent) {
 		while (!event.isEmpty()) {
+
 			Info info = event.pop().getInfo();
-			if (intent != null && event != null) {
 
-				//Get the agent to the intent 
-				//(I suppose all actions require the agent to be by the intent)
-				if(agent != null){
-					move(agent, intent.getInfo().location);
-				}
-
-				//Change the properties of the intent
-				if (info.color != null) color(intent, info.color);
-				if (info.location != null) move(intent, info.location);
-				if (info.size != null) size(intent, info.size);
-
+			// Change the properties of the intent
+			if (info.color != null) {
+				color(intent, info.color);
+			}
+			if (info.location != null) {
+				move(intent, info.location);
+			}
+			if (info.size != null) {
+				size(intent, info.size);
 			}
 
 		}
@@ -262,24 +281,39 @@ public class World {
 	 */
 	private void size(Entity entity, Size size) {
 		if (entity != null) {
-			ImageView imageView = entityMap.get(entity);
-
-			double fromX = 1, fromY = 1;
-			// update info values and retrieve old scale if there is one
-			if (entity.getInfo().size != null) {
-				fromX = entity.getInfo().size.x;
-				fromY = entity.getInfo().size.y;
-			}
-			entity.getInfo().size = size;
-
-			// transition
-			ScaleTransition st = new ScaleTransition(Duration.millis(1000), imageView);
-			st.setFromX(fromX);
-			st.setFromY(fromY);
-			st.setToX(size.x);
-			st.setToY(size.y);
+			ScaleTransition st = prepareSize(entity, size);
 			st.play();
 		}
+	}
+
+	/**
+	 * Executes sizing for size. Start using play()
+	 * 
+	 * @param entity
+	 *            entity being resized
+	 * @param size
+	 *            new size of entity
+	 * @return ScaleTransition of resizing.
+	 */
+	private ScaleTransition prepareSize(Entity entity, Size size) {
+		ImageView imageView = entityMap.get(entity);
+
+		double fromX = 1, fromY = 1;
+		// update info values and retrieve old scale if there is one
+		if (entity.getInfo().size != null) {
+			fromX = entity.getInfo().size.x;
+			fromY = entity.getInfo().size.y;
+		}
+		entity.getInfo().size = size;
+
+		// transition
+		ScaleTransition st = new ScaleTransition(Duration.millis(1000), imageView);
+		st.setFromX(fromX);
+		st.setFromY(fromY);
+		st.setToX(size.x);
+		st.setToY(size.y);
+
+		return st;
 	}
 
 	/**
@@ -291,6 +325,22 @@ public class World {
 	 *            the new color of the entity
 	 */
 	private void color(Entity entity, Color color) {
+		if (entity != null) {
+			Timeline timeline = prepareColor(entity, color);
+			timeline.play();
+		}
+	}
+
+	/**
+	 * Performs the actual color transition for color.
+	 * 
+	 * @param entity
+	 *            entity being colored
+	 * @param color
+	 *            new color
+	 * @return timeline of color transition, do transition.play() to start it.
+	 */
+	private Timeline prepareColor(Entity entity, Color color) {
 		// set current color, needed for animation
 		Color startColor = entity.getInfo().color;
 		if (startColor == null) {
@@ -300,32 +350,31 @@ public class World {
 		// set new color
 		Color targetColor = color;
 
-		if (entity != null) {
-			// update entity color data
-			entity.getInfo().color = targetColor;
+		// update entity color data
+		entity.getInfo().color = targetColor;
 
-			ImageView imageView = entityMap.get(entity);
+		ImageView imageView = entityMap.get(entity);
 
-			// mask the area that is being colored
-			imageView.setClip(new ImageView(entity.getInfo().image));
+		// mask the area that is being colored
+		imageView.setClip(new ImageView(entity.getInfo().image));
 
-			// create the coloring effect
-			ColorInput colorInput = new ColorInput(0, 0, imageView.getImage().getWidth(), imageView.getImage()
-					.getHeight(), targetColor);
-			Blend blush = new Blend(BlendMode.SCREEN, colorInput, null);
-			imageView.setEffect(blush);
+		// create the coloring effect
+		ColorInput colorInput = new ColorInput(0, 0, imageView.getImage().getWidth(), imageView.getImage().getHeight(),
+				startColor);
+		Blend blush = new Blend(BlendMode.SCREEN, colorInput, null);
+		imageView.setEffect(blush);
 
-			// animate coloring effect from startColor to targetColor
-			Timeline timeline = new Timeline();
-			timeline.getKeyFrames().addAll(
-					new KeyFrame(Duration.ZERO, new KeyValue(colorInput.paintProperty(), startColor)),
-					new KeyFrame(new Duration(1000), new KeyValue(colorInput.paintProperty(), targetColor)));
-			timeline.play();
+		// cache imageView for performance or something
+		imageView.setCache(true);
+		imageView.setCacheHint(CacheHint.SPEED);
 
-			// cache imageView for performance or something
-			imageView.setCache(true);
-			imageView.setCacheHint(CacheHint.SPEED);
-		}
+		// animate coloring effect from startColor to targetColor
+		Timeline timeline = new Timeline();
+		timeline.getKeyFrames().addAll(
+				new KeyFrame(Duration.ZERO, new KeyValue(colorInput.paintProperty(), startColor)),
+				new KeyFrame(new Duration(1000), new KeyValue(colorInput.paintProperty(), targetColor)));
+
+		return timeline;
 	}
 
 	/**
@@ -334,7 +383,7 @@ public class World {
 	 * @param entity
 	 *            entity being shaked
 	 */
-	public void shake(Entity entity) {
+	private void shake(Entity entity) {
 		if (entity != null) {
 			RotateTransition rt = prepareShake(entity);
 
@@ -350,7 +399,7 @@ public class World {
 	 *            entity being shaked
 	 * @return object containing cool animation
 	 */
-	public RotateTransition prepareShake(Entity entity) {
+	private RotateTransition prepareShake(Entity entity) {
 		ImageView imageView = entityMap.get(entity);
 
 		RotateTransition rt = new RotateTransition(Duration.millis(100), imageView);
@@ -369,7 +418,7 @@ public class World {
 	 * @param intent
 	 *            entity getting eaten
 	 */
-	public void eat(final Entity agent, final Entity intent) {
+	private void eat(final Entity agent, final Entity intent) {
 		if (agent != null && intent != null) {
 			PathTransition move = prepareMove(agent, intent.getInfo().location);
 
@@ -434,12 +483,5 @@ public class World {
 		});
 
 		return ft;
-	}
-
-	/**
-	 * prints size of entityMap in console, useful for debugging.
-	 */
-	public void printSize() {
-		System.out.println(entityMap.size());
 	}
 }

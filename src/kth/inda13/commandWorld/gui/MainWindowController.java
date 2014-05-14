@@ -3,6 +3,7 @@ package kth.inda13.commandWorld.gui;
 import java.util.Arrays;
 
 import javafx.application.HostServices;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -54,6 +55,15 @@ public class MainWindowController {
 		//Create world
 		world = new World(outputImagePane);
 		parser = new Parser(world);
+		
+		
+		// Start with the text field focused
+		Platform.runLater(new Runnable() {
+	        @Override
+	        public void run() {
+	        	inputTextField.requestFocus();
+	        }
+	    });
 	}
 	
 	/**
