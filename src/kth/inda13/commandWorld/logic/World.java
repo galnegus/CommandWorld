@@ -420,19 +420,10 @@ public class World {
 	 */
 	private void eat(final Entity agent, final Entity intent) {
 		if (agent != null && intent != null) {
-			PathTransition move = prepareMove(agent, intent.getInfo().location);
-
-			final RotateTransition shake = prepareShake(agent);
-			final FadeTransition remove = prepareRemove(intent);
-			move.setOnFinished(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent arg0) {
-					shake.play();
-					remove.play();
-				}
-			});
-			move.play();
-
+			RotateTransition shake = prepareShake(agent);
+			FadeTransition remove = prepareRemove(intent);
+			shake.play();
+			remove.play();
 		}
 	}
 

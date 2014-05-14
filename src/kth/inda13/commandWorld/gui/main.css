@@ -25,15 +25,24 @@
 }
 
 #help-button {
-	-fx-font-size: 20;
 	-fx-font-weight: bold;
-	
-	-fx-padding: 5 15;
 	-fx-translate-x: -10;
 	-fx-translate-y: 10;
 }
 
+#help-button, #clear-button {
+	-fx-background-color: #888, linear-gradient(#fff, #e8e8e8);
+	-fx-font-size: 20;
+	-fx-padding: 5 15;
+}
+
+#clear-button {
+	-fx-translate-x: 10;
+	-fx-translate-y: 10;
+}
+
 #response-grid-pane {
+	-fx-border-color: #888;
 	-fx-padding: 10 5 14 15;
 	-fx-background-color: #f8f8f8;
 }
@@ -47,12 +56,12 @@
 }
 
 #response-grid-pane, #input-hbox {
-	-fx-border-color: #ccc;
 	-fx-border-width: 1 0 0 0;
 	-fx-border-style: solid;
 }
 
 #input-hbox {
+	-fx-border-color: #ccc;
 	-fx-padding: 10;
 	-fx-background-color: #eee;
 }
@@ -72,12 +81,6 @@
 	-fx-padding: 10 20;
 }
 
-#clear-button {
-	-fx-padding: 5 15;
-	-fx-translate-x: 10;
-	-fx-translate-y: 10;
-}
-
-#input-text-field, #input-submit-button, #clear-button {
+#input-text-field, #input-submit-button {
 	-fx-font-size: 20;
 }
