@@ -255,4 +255,5 @@
 			</panes>
 		</Accordion>
 	</children>
+	<Label text="Made by Rodrigo Roa Rodriguez and Tobias Hindersson." />
 </VBox>
