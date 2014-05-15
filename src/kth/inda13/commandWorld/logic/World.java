@@ -174,12 +174,15 @@ public class World {
 	 * @param intent
 	 */
 	private void event(Entity agent, Deque<Word> event, Entity intent) {
+		Word action;
+		Info info;
 		if (intent != null) { //Case #1: There is a target (but not necessarily an agent)
 			move(agent, intent.getInfo().location);
 
 			while (!event.isEmpty()) { 
-
-				Info info = event.pop().getInfo();
+				action = event.pop();
+				info = action.getInfo();
+				execute(agent, action, intent);
 
 				// Change the properties of the intent
 				if (info.color != null) {
@@ -194,8 +197,10 @@ public class World {
 			}
 		} else {// Case #2: The agent targets itself (= no intent)
 			while (!event.isEmpty()) { 
-
-				Info info = event.pop().getInfo();
+				action = event.pop();
+				info = action.getInfo();
+				execute(agent, action);
+				
 			// Change the properties of the agent
 			if (info.color != null) {
 				color(agent, info.color);
@@ -206,15 +211,43 @@ public class World {
 			if (info.size != null) {
 				size(agent, info.size);
 			}
+			
 			}
 		}
 	}
 	
+	/**
+	 * TODO
+	 * 
+	 * @param agent
+	 * @param event
+	 * @param intent
+	 */
+	private void execute(Entity agent, Word event, Entity intent) {
+		switch(event){
+		case DANCE:
+			dance(intent); 
+			break;
+		case EAT:
+			eat(agent, intent); 
+			break;
+		case PUSH:
+			dance(intent);	
+		}
+	}
+	
+	private void execute(Entity agent, Word event) {
+		execute(null, event, agent);
+	}
+	
+
 	private boolean isEvent(Word word){
 		Info info = word.getInfo();
 		//If every field is null then it is an event
 		return info.color==null && info.image==null && info.location==null && info.size==null;
 	}
+	
+	
 
 	/**
 	 * Moves an entity to the specified position relative to the node alignment. <br />
