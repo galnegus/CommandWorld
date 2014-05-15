@@ -426,6 +426,22 @@ public class World {
 			remove.play();
 		}
 	}
+	
+	
+	/**
+	 * One entity moves to another entity, then eats it. Uses other events to make it happen.
+	 * 
+	 * @param agent
+	 *            entity getting fed
+	 * @param intent
+	 *            entity getting eaten
+	 */
+	private void dance(final Entity agent) {
+		if (agent != null) {
+			RotateTransition shake = prepareShake(agent);
+			shake.play();
+		}
+	}
 
 	/**
 	 * clear fades out all entities from the world and then removes them from the imagePane and the entityMap.
