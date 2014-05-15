@@ -15,10 +15,10 @@
 		<Label styleClass="h1" text="Command world" />
 		<Label styleClass="h2" text="Help and glossary" />
 	
-		<Label text="How to use this program" StyleClass="title" />
+		<Label text="How to use this program" styleClass="title" />
 		<Label
 			text="Write sentences in the text field and submit to make things happen on the screen! "
-			StyleClass="pane-description" />
+			styleClass="pane-description" />
 		<Label text="Sentences consist of tags, each tag followed by one or more words." />
 		
 		<Label />
@@ -39,18 +39,18 @@
 		
 		<Label />
 			
-		<Label text="Tags" StyleClass="title" />
+		<Label text="Tags" styleClass="title" />
 		<Label text="Use tags to tell the program what a word is."
-			StyleClass="pane-description" />
+			styleClass="pane-description" />
 		<Label styleClass="list-element" text="a: is for agent, agents do things." />
 		<Label styleClass="list-element" text="e: is for events, events are thing that happen." />
 		<Label styleClass="list-element" text="i: is for intent, the intended target of the event." />
 		
 		<Label />
 		
-		<Label text="Words" StyleClass="title" />
+		<Label text="Words" styleClass="title" />
 		<Label text="Click below to see lists of available words."
-									StyleClass="pane-description" />
+									styleClass="pane-description" />
 		<Accordion VBox.vgrow="ALWAYS" >
 			<panes>
 				<TitledPane text="Entities">
@@ -58,7 +58,7 @@
 						<VBox>
 							<children>
 								<Label text="The following are optimal as agents and intents."
-									StyleClass="pane-description" />
+									styleClass="pane-description" />
 								<Label text="Person" styleClass="example" />
 								<Label text="Snake" styleClass="example" />
 								<Label text="Monkey" styleClass="example" />
@@ -73,16 +73,16 @@
 							<VBox>
 								<children>
 									<Label text="The following are optimal as events or descriptions."
-										StyleClass="pane-description" />
+										styleClass="pane-description" />
 
-								<Label text="Places:" StyleClass="type-header" />
+								<Label text="Places:" styleClass="type-header" />
 									<Label text="Up" styleClass="example" />
 									<Label text="Right" styleClass="example" />
 									<Label text="Down" styleClass="example" />
 									<Label text="Left" styleClass="example" />
 									<Label text="Center" styleClass="example" />
 
-									<Label text="Sizes:" StyleClass="type-header" />
+									<Label text="Sizes:" styleClass="type-header" />
 									<Label text="Big" styleClass="example" />
 									<Label text="Small" styleClass="example" />
 									<Label text="Thin" styleClass="example" />
@@ -90,7 +90,7 @@
 									<Label text="Short" styleClass="example" />
 									<Label text="Long" styleClass="example" />
 
-									<Label text="Colors:" StyleClass="type-header" />
+									<Label text="Colors:" styleClass="type-header" />
 									<Label text="Aliceblue" styleClass="example" />
 									<Label text="Antiquewhite" styleClass="example" />
 									<Label text="Aqua" styleClass="example" />
@@ -250,7 +250,7 @@
 						<VBox>
 							<children>
 								<Label text="The following are optimal only as events."
-									StyleClass="pane-description" />
+									styleClass="pane-description" />
 								<Label text="Dance" styleClass="example"  />
 								<Label text="Eat" styleClass="example" />
 								<Label text="Go " styleClass="example"  />
