@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+	minWidth="-Infinity" prefWidth="400.0" xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<Label text="Command world" />
+		<Label text="Help and glossary" />
+		<Accordion>
+			<panes>
+				<TitledPane text="How to use this program">
+					<content>
+						<VBox>
+							<children>
+								<Label text="Write tags followed by words to make things happen on screen! "
+													StyleClass="pane-description" />
+								<Label text="'e monkey' creates a monkey." />
+								<Label text="'e red monkey' creates a red monkey." />
+								<Label text="'e left small red monkey' creates a small red monkey on the left." />
+								<Label text="'e red i monkey' makes an existing monkey red." />
+								<Label text="'e left small red i monkey' sends an existing monkey to the lefts and makes it small and red." />
+								<Label text="'e blue i left small red monkey' makes an existing small red monkey in the left be blue." />
+								<Label text="'a monkey e eat i snake' makes an existing monkey eat an existing snake." />
+							</children>
+						</VBox>
+					</content>
+				</TitledPane>
+				<TitledPane animated="false" text="Tags">
+					<content>
+						<VBox>
+							<children> 
+																				<Label text="Use tags to tell the program what a word is."
+													StyleClass="pane-description" />
+								<Label text="A : is for agent, agents do things."/>
+								<Label text="E : is for events, events are thing that happen."/>
+								<Label text="I : is for intent, the intended target of the event." />
+							</children>
+						</VBox>
+					</content>
+				</TitledPane>
+				<TitledPane animated="false" text="Words">
+					<content>
+						<Accordion>
+							<panes>
+								<TitledPane text="Entities">
+									<content>
+										<VBox>
+											<children>
+												<Label text="The following are optimal as agents and intents."
+													StyleClass="pane-description" />
+												<Label text="Person" />
+												<Label text="Snake" />
+												<Label text="Monkey" />
+												<Label text="Tiger" />
+											</children>
+										</VBox>
+									</content>
+								</TitledPane>
+								<TitledPane text="Properties">
+									<content>
+										<VBox>
+											<children>
+												<Label
+													text="The following are optimal as events or descriptions."
+													StyleClass="pane-description" />
+												<Label text="Places:" StyleClass="type-header" />
+												<Label text="Up" />
+												<Label text="Right" />
+												<Label text="Down" />
+												<Label text="Left" />
+												<Label text="Center" />
+
+												<Label text="Sizes:" StyleClass="type-header" />
+												<Label text="Big" />
+												<Label text="Small" />
+												<Label text="Thin" />
+												<Label text="Thick" />
+												<Label text="Short" />
+												<Label text="Long" />
+
+												<Label text="Colors:" StyleClass="type-header" />
+												<Label text="Aliceblue" />
+												<Label text="Antiquewhite" />
+												<Label text="Aqua" />
+												<Label text="Aquamarine" />
+												<Label text="Azure" />
+												<Label text="Beige" />
+												<Label text="Bisque" />
+												<Label text="Black" />
+												<Label text="Blanchedalmond" />
+												<Label text="Blue" />
+												<Label text="Blueviolet" />
+												<Label text="Brown" />
+												<Label text="Burlywood" />
+												<Label text="Cadetblue" />
+												<Label text="Chartreuse" />
+												<Label text="Chocolate" />
+												<Label text="Coral" />
+												<Label text="Cornflowerblue" />
+												<Label text="Cornsilk" />
+												<Label text="Crimson" />
+												<Label text="Cyan" />
+												<Label text="Darkblue" />
+												<Label text="Darkcyan" />
+												<Label text="Darkgoldenrod" />
+												<Label text="Darkgray" />
+												<Label text="Darkgreen" />
+												<Label text="Darkgrey" />
+												<Label text="Darkkhaki" />
+												<Label text="Darkmagenta" />
+												<Label text="Darkolivegreen" />
+												<Label text="Darkorange" />
+												<Label text="Darkorchid" />
+												<Label text="Darkred" />
+												<Label text="Darksalmon" />
+												<Label text="Darkseagreen" />
+												<Label text="Darkslateblue" />
+												<Label text="Darkslategray" />
+												<Label text="Darkslategrey" />
+												<Label text="Darkturquoise" />
+												<Label text="Darkviolet" />
+												<Label text="Deeppink" />
+												<Label text="Deepskyblue" />
+												<Label text="Dimgray" />
+												<Label text="Dimgrey" />
+												<Label text="Dodgerblue" />
+												<Label text="Firebrick" />
+												<Label text="Floralwhite" />
+												<Label text="Forestgreen" />
+												<Label text="Fuchsia" />
+												<Label text="Gainsboro" />
+												<Label text="Ghostwhite" />
+												<Label text="Gold" />
+												<Label text="Goldenrod" />
+												<Label text="Gray" />
+												<Label text="Green" />
+												<Label text="Greenyellow" />
+												<Label text="Grey" />
+												<Label text="Honeydew" />
+												<Label text="Hotpink" />
+												<Label text="Indianred" />
+												<Label text="Indigo" />
+												<Label text="Ivory" />
+												<Label text="Khaki" />
+												<Label text="Lavender" />
+												<Label text="Lavenderblush" />
+												<Label text="Lawngreen" />
+												<Label text="Lemonchiffon" />
+												<Label text="Lightblue" />
+												<Label text="Lightcoral" />
+												<Label text="Lightcyan" />
+												<Label text="Lightgoldenrodyellow" />
+												<Label text="Lightgray" />
+												<Label text="Lightgreen" />
+												<Label text="Lightgrey" />
+												<Label text="Lightpink" />
+												<Label text="Lightsalmon" />
+												<Label text="Lightseagreen" />
+												<Label text="Lightskyblue" />
+												<Label text="Lightslategray" />
+												<Label text="Lightslategrey" />
+												<Label text="Lightsteelblue" />
+												<Label text="Lightyellow" />
+												<Label text="Lime" />
+												<Label text="Limegreen" />
+												<Label text="Linen" />
+												<Label text="Magenta" />
+												<Label text="Maroon" />
+												<Label text="Mediumaquamarine" />
+												<Label text="Mediumblue" />
+												<Label text="Mediumorchid" />
+												<Label text="Mediumpurple" />
+												<Label text="Mediumseagreen" />
+												<Label text="Mediumslateblue" />
+												<Label text="Mediumspringgreen" />
+												<Label text="Mediumturquoise" />
+												<Label text="Mediumvioletred" />
+												<Label text="Midnightblue" />
+												<Label text="Mintcream" />
+												<Label text="Mistyrose" />
+												<Label text="Moccasin" />
+												<Label text="Navajowhite" />
+												<Label text="Navy" />
+												<Label text="Oldlace" />
+												<Label text="Olive" />
+												<Label text="Olivedrab" />
+												<Label text="Orange" />
+												<Label text="Orangered" />
+												<Label text="Orchid" />
+												<Label text="Palegoldenrod" />
+												<Label text="Palegreen" />
+												<Label text="Paleturquoise" />
+												<Label text="Palevioletred" />
+												<Label text="Papayawhip" />
+												<Label text="Peachpuff" />
+												<Label text="Peru" />
+												<Label text="Pink" />
+												<Label text="Plum" />
+												<Label text="Powderblue" />
+												<Label text="Purple" />
+												<Label text="Red" />
+												<Label text="Rosybrown" />
+												<Label text="Royalblue" />
+												<Label text="Saddlebrown" />
+												<Label text="Salmon" />
+												<Label text="Sandybrown" />
+												<Label text="Seagreen" />
+												<Label text="Seashell" />
+												<Label text="Sienna" />
+												<Label text="Silver" />
+												<Label text="Skyblue" />
+												<Label text="Slateblue" />
+												<Label text="Slategray" />
+												<Label text="Slategrey" />
+												<Label text="Snow" />
+												<Label text="Springgreen" />
+												<Label text="Steelblue" />
+												<Label text="Tan" />
+												<Label text="Teal" />
+												<Label text="Thistle" />
+												<Label text="Tomato" />
+												<Label text="Transparent" />
+												<Label text="Turquoise" />
+												<Label text="Violet" />
+												<Label text="Wheat" />
+												<Label text="White" />
+												<Label text="Whitesmoke" />
+												<Label text="Yellow" />
+												<Label text="Yellowgreen" />
+
+											</children>
+										</VBox>
+									</content>
+								</TitledPane>
+								<TitledPane text="Events">
+									<content>
+										<VBox>
+											<children>
+												<Label text="The following are optimal only as events."
+													StyleClass="pane-description" />
+												<Label text="Eat" />
+											</children>
+										</VBox>
+									</content>
+								</TitledPane>
+							</panes>
+						</Accordion>
+					</content>
+				</TitledPane>
+			</panes>
+		</Accordion>
+	</children>
+</VBox>
