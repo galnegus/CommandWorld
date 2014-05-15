@@ -24,17 +24,17 @@
 		<Label />
 		
 		<Label styleClass="title" text="Examples of sentences: " />
-		<Label text="create a monkey:" />
+		<Label text="Create a monkey:" />
 		<Label styleClass="example" text="e monkey" />
-		<Label text="create a small red monkey on the left:" />
+		<Label text="Create a small red monkey on the left:" />
 		<Label styleClass="example" text="e left small red monkey" />
-		<Label text="turn an existing monkey red:" />
+		<Label text="Turn an existing monkey red:" />
 		<Label styleClass="example" text="e red i monkey" />
-		<Label text="move an existing monkey to the left and make it small and red:" />
+		<Label text="Move an existing monkey to the left and make it small and red:" />
 		<Label styleClass="example" text="e left small red i monkey" />
-		<Label text="turn an existing monkey that is red and positioned to the left blue:" />
+		<Label text="Turn an existing monkey that is red and positioned to the left blue:" />
 		<Label styleClass="example" text="e blue i left small red monkey" />
-		<Label text="make an existing monkey eat an existing snake:" />
+		<Label text="Make an existing monkey eat an existing snake:" />
 		<Label styleClass="example" text="a monkey e eat i snake" />
 		
 		<Label />
@@ -251,11 +251,14 @@
 							<children>
 								<Label text="The following are optimal only as events."
 									StyleClass="pane-description" />
-								<Label text="Eat" styleClass="example" />
 								<Label text="Dance" styleClass="example"  />
+								<Label text="Eat" styleClass="example" />
 								<Label text="Go " styleClass="example"  />
 								<Label text="Stand" styleClass="example"  />
+								<Label text="Kill" styleClass="example" />
 								<Label text="Push" styleClass="example" />
+								<Label text="Remove" styleClass="example" />
+								<Label text="Stand" styleClass="example"  />
 							</children>
 						</VBox>
 					</content>
