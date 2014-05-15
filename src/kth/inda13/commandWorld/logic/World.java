@@ -203,6 +203,11 @@ public class World {
 			break;
 		case PUSH:
 			dance(intent);	
+			break;
+		case REMOVE:
+		case KILL:
+			remove(intent);
+
 		}
 	}
 	

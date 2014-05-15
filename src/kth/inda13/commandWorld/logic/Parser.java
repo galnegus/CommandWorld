@@ -52,31 +52,33 @@ public class Parser {
 		//Divide string into words. Identify tags and store the words in their respective lists.
 		StringTokenizer st = new StringTokenizer(input.toLowerCase());
 		int index = -1;
-		Boolean valid = true; // Invariant: true as long all words exist in Word
+		Boolean valid = false; // Invariant: true as long all words exist in Word and the begins with a tag
 		String token;
 
 		while(st.hasMoreTokens()){
 			token = st.nextToken();
 
 			if(token.matches("[a|e|i]")){//Token is a tag
-
+				valid = true; // Sentence beging with a tag.
 				//Find out which one is the new tag
 				switch(token){
 				case "a": {index = 0; break;}
 				case "e": {index = 1; break;}
 				case "i": {index = 2; break;}
 				}
-			}else{//Token is a word
+			}else if(valid){//Token is a word
 				//Check if still valid
-				if(valid) valid = stringToWord.containsKey(token);
-				//Store information in proper list
+				valid = stringToWord.containsKey(token);
+				//If not valid interrupt parsing
+				if(!valid) break;
+				//Store information in  the proper list
 				words[index].push(stringToWord.get(token));
 			}
 		}
 		//If valid send parsed input to world. Otherwise return "invalid sentence".
 		if(valid){
 			output = String.format("Agent: %s, Event: %s, Intent: %s", words[0].peek(), words[1].peek(), words[2].peek()) ;
-			world.sentence(words[0], words[1], words[2]);
+			if(!words[1].isEmpty()) world.sentence(words[0], words[1], words[2]);
 		}else{
 			output = "Invalid sentence.";
 		}

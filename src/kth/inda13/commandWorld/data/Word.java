@@ -18,6 +18,8 @@ public enum Word {
 	GO,
 	STAND,
 	PUSH,
+	REMOVE,
+	KILL,
 	//Entities
 	PERSON(new Image("img/person.png")),
 	MONKEY(new Image("img/MONKEY.png")),

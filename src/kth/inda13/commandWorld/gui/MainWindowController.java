@@ -75,23 +75,29 @@ public class MainWindowController {
 	 * @throws IOException 
 	 */
 	@FXML
-	private void helpButton() throws IOException {
-		Stage helpWindow = new Stage();
-		helpWindow.setResizable(false);
-		helpWindow.setTitle("CommandWorld Help Window");
-		
-		VBox root = (VBox) FXMLLoader.load(getClass().getResource("HelpWindow.fxml"));
-		Label label = new Label("HELP");
-		root.getChildren().add(label);
-
-		Scene scene = new Scene(root, 300, 500);
-		//scene.getStylesheets().add(getClass().getResource("help.css").toExternalForm());
-
-		helpWindow.setScene(scene);
-		helpWindow.show();
-		
-		// why not? 
-		inputTextField.requestFocus();
+	private void helpButton() {
+		try {
+			Stage helpWindow = new Stage();
+			helpWindow.setResizable(false);
+			helpWindow.setTitle("CommandWorld Help Window");
+			
+			VBox root;
+			
+			root = (VBox) FXMLLoader.load(getClass().getResource("HelpWindow.fxml"));
+			
+	
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("help.css").toExternalForm());
+			helpWindow.setResizable(true);
+	
+			helpWindow.setScene(scene);
+			helpWindow.show();
+			
+			// why not? 
+			inputTextField.requestFocus();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -104,7 +110,9 @@ public class MainWindowController {
 		String response;
 		if (!input.isEmpty()) {
 			// Quit command
-			if(input.toLowerCase().equals("quit")) System.exit(0);
+			if(input.equalsIgnoreCase("quit")) System.exit(0);
+			if(input.equalsIgnoreCase("help")) helpButton();
+			
 
 			// remove old input
 			inputTextField.clear();

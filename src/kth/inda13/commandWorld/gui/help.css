@@ -1,0 +1,39 @@
+.root {
+
+}
+
+.label {
+	-fx-wrap-text: true;
+	-fx-padding: 0 0 3 10;
+}
+
+.h1 {
+	-fx-font-size: 17;
+	-fx-font-weight: bold;
+}
+
+.h2 {
+	-fx-font-size: 15;
+	-fx-font-weight: bold;
+}
+
+.title {
+	-fx-font-size: 14;
+	-fx-font-weight: bold;
+}
+
+.list-element {
+	-fx-padding: 0 0 0 30;
+}
+
+.example {
+	-fx-padding: 0 0 0 40;
+	-fx-text-fill: #666;
+	-fx-font-family: Courier New;
+}
+
+.pane-description {
+	-fx-font-size: 13;
+	-fx-text-fill: #333;
+}
+
