@@ -1,10 +1,12 @@
 package kth.inda13.commandWorld.gui;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import kth.inda13.commandWorld.data.Word;
 import kth.inda13.commandWorld.logic.Parser;
@@ -69,14 +72,15 @@ public class MainWindowController {
 	/**
 	 * helpButton is called when the "?" button is pressed.
 	 * It opens a new window containing instructions for CommandWorld.
+	 * @throws IOException 
 	 */
 	@FXML
-	private void helpButton() {
+	private void helpButton() throws IOException {
 		Stage helpWindow = new Stage();
 		helpWindow.setResizable(false);
 		helpWindow.setTitle("CommandWorld Help Window");
 		
-		StackPane root = new StackPane();
+		VBox root = (VBox) FXMLLoader.load(getClass().getResource("HelpWindow.fxml"));
 		Label label = new Label("HELP");
 		root.getChildren().add(label);
 
@@ -86,7 +90,7 @@ public class MainWindowController {
 		helpWindow.setScene(scene);
 		helpWindow.show();
 		
-		// why not?
+		// why not? 
 		inputTextField.requestFocus();
 	}
 
