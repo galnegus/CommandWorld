@@ -9,20 +9,21 @@
 <?import javafx.scene.control.Label?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="300"
-	minWidth="400" prefWidth="500.0" prefHeight="800" xmlns="http://javafx.com/javafx/8"
-	xmlns:fx="http://javafx.com/fxml/1">
+	minWidth="400" prefWidth="500.0" prefHeight="800"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<Label styleClass="h1" text="Command world" />
 		<Label styleClass="h2" text="Help and glossary" />
-	
+
 		<Label text="How to use this program" styleClass="title" />
 		<Label
 			text="Write sentences in the text field and submit to make things happen on the screen! "
 			styleClass="pane-description" />
-		<Label text="Sentences consist of tags, each tag followed by one or more words." />
-		
+		<Label
+			text="Sentences consist of tags, each tag followed by one or more words." />
+
 		<Label />
-		
+
 		<Label styleClass="title" text="Examples of sentences: " />
 		<Label text="Create a monkey:" />
 		<Label styleClass="example" text="e monkey" />
@@ -30,28 +31,32 @@
 		<Label styleClass="example" text="e left small red monkey" />
 		<Label text="Turn an existing monkey red:" />
 		<Label styleClass="example" text="e red i monkey" />
-		<Label text="Move an existing monkey to the left and make it small and red:" />
+		<Label
+			text="Move an existing monkey to the left and make it small and red:" />
 		<Label styleClass="example" text="e left small red i monkey" />
-		<Label text="Turn an existing monkey that is red and positioned to the left blue:" />
+		<Label
+			text="Turn an existing monkey that is red and positioned to the left blue:" />
 		<Label styleClass="example" text="e blue i left small red monkey" />
 		<Label text="Make an existing monkey eat an existing snake:" />
 		<Label styleClass="example" text="a monkey e eat i snake" />
-		
+
 		<Label />
-			
+
 		<Label text="Tags" styleClass="title" />
 		<Label text="Use tags to tell the program what a word is."
 			styleClass="pane-description" />
 		<Label styleClass="list-element" text="a: is for agent, agents do things." />
-		<Label styleClass="list-element" text="e: is for events, events are thing that happen." />
-		<Label styleClass="list-element" text="i: is for intent, the intended target of the event." />
-		
+		<Label styleClass="list-element"
+			text="e: is for events, events are thing that happen." />
+		<Label styleClass="list-element"
+			text="i: is for intent, the intended target of the event." />
+
 		<Label />
-		
+
 		<Label text="Words" styleClass="title" />
 		<Label text="Click below to see lists of available words."
-									styleClass="pane-description" />
-		<Accordion VBox.vgrow="ALWAYS" >
+			styleClass="pane-description" />
+		<Accordion VBox.vgrow="ALWAYS">
 			<panes>
 				<TitledPane text="Entities">
 					<content>
@@ -62,7 +67,7 @@
 								<Label text="Person" styleClass="example" />
 								<Label text="Snake" styleClass="example" />
 								<Label text="Monkey" styleClass="example" />
-								<Label text="Tiger" styleClass="example"  />
+								<Label text="Tiger" styleClass="example" />
 							</children>
 						</VBox>
 					</content>
@@ -75,7 +80,7 @@
 									<Label text="The following are optimal as events or descriptions."
 										styleClass="pane-description" />
 
-								<Label text="Places:" styleClass="type-header" />
+									<Label text="Places:" styleClass="type-header" />
 									<Label text="Up" styleClass="example" />
 									<Label text="Right" styleClass="example" />
 									<Label text="Down" styleClass="example" />
@@ -251,20 +256,20 @@
 							<children>
 								<Label text="The following are optimal only as events."
 									styleClass="pane-description" />
-								<Label text="Dance" styleClass="example"  />
+								<Label text="Dance" styleClass="example" />
 								<Label text="Eat" styleClass="example" />
-								<Label text="Go " styleClass="example"  />
-								<Label text="Stand" styleClass="example"  />
+								<Label text="Go " styleClass="example" />
+								<Label text="Stand" styleClass="example" />
 								<Label text="Kill" styleClass="example" />
 								<Label text="Push" styleClass="example" />
 								<Label text="Remove" styleClass="example" />
-								<Label text="Stand" styleClass="example"  />
+								<Label text="Stand" styleClass="example" />
 							</children>
 						</VBox>
 					</content>
 				</TitledPane>
 			</panes>
 		</Accordion>
-<Label text="Made by Rodrigo Roa Rodriguez and Tobias Hindersson." />
-</children>
+		<Label text="Made by Rodrigo Roa Rodriguez and Tobias Hindersson." />
+	</children>
 </VBox>
