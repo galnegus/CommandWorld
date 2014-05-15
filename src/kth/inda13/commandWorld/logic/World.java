@@ -137,34 +137,34 @@ public class World {
 		this.event(this.get(agent), event, this.get(intent));
 	}
 
-	/**
-	 * Performs an event, if the word contains some data, it is applied to the intent. Use this method if you want to
-	 * perform several modifications on the same Entity.
-	 * 
-	 * @param intent
-	 *            the entity being altered
-	 * @param event
-	 *            the event being performed
-	 */
-	private void event(final Entity agent, final Deque<Word> event, final Entity intent) {
-		if (intent != null && event != null) {
-			// Get the agent to the intent
-			// (I suppose all actions require the agent to be by the intent)
-			if (agent != null) {
-				PathTransition pt = prepareMove(agent, intent.getInfo().location);
-				pt.setOnFinished(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent arg0) {
-						executeEvents(agent, event, intent);
-					}
-				});
-				pt.play();
-			} else {
-				executeEvents(agent, event, intent);
-			}
-
-		}
-	}
+//	/**
+//	 * Performs an event, if the word contains some data, it is applied to the intent. Use this method if you want to
+//	 * perform several modifications on the same Entity.
+//	 * 
+//	 * @param intent
+//	 *            the entity being altered
+//	 * @param event
+//	 *            the event being performed
+//	 */
+//	private void event(final Entity agent, final Deque<Word> event, final Entity intent) {
+//		if (intent != null && event != null) {
+//			// Get the agent to the intent
+//			// (I suppose all actions require the agent to be by the intent)
+//			if (agent != null) {
+//				PathTransition pt = prepareMove(agent, intent.getInfo().location);
+//				pt.setOnFinished(new EventHandler<ActionEvent>() {
+//					@Override
+//					public void handle(ActionEvent arg0) {
+//						executeEvents(agent, event, intent);
+//					}
+//				});
+//				pt.play();
+//			} else {
+//				executeEvents(agent, event, intent);
+//			}
+//
+//		}
+//	}
 
 	/**
 	 * helper function for event, executes events.
@@ -173,23 +173,47 @@ public class World {
 	 * @param event
 	 * @param intent
 	 */
-	private void executeEvents(Entity agent, Deque<Word> event, Entity intent) {
-		while (!event.isEmpty()) {
+	private void event(Entity agent, Deque<Word> event, Entity intent) {
+		if (intent != null) { //Case #1: There is a target (but not necessarily an agent)
+			move(agent, intent.getInfo().location);
 
-			Info info = event.pop().getInfo();
+			while (!event.isEmpty()) { 
 
-			// Change the properties of the intent
+				Info info = event.pop().getInfo();
+
+				// Change the properties of the intent
+				if (info.color != null) {
+					color(intent, info.color);
+				}
+				if (info.location != null) {
+					move(intent, info.location);
+				}
+				if (info.size != null) {
+					size(intent, info.size);
+				}
+			}
+		} else {// Case #2: The agent targets itself (= no intent)
+			while (!event.isEmpty()) { 
+
+				Info info = event.pop().getInfo();
+			// Change the properties of the agent
 			if (info.color != null) {
-				color(intent, info.color);
+				color(agent, info.color);
 			}
 			if (info.location != null) {
-				move(intent, info.location);
+				move(agent, info.location);
 			}
 			if (info.size != null) {
-				size(intent, info.size);
+				size(agent, info.size);
 			}
-
+			}
 		}
+	}
+	
+	private boolean isEvent(Word word){
+		Info info = word.getInfo();
+		//If every field is null then it is an event
+		return info.color==null && info.image==null && info.location==null && info.size==null;
 	}
 
 	/**
