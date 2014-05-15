@@ -11,22 +11,32 @@ import javafx.scene.paint.Color;
  *
  */
 public enum Word {
+	//Events
+	EAT,
+	DANCE,
+	MOVE,
+	GO,
+	STAND,
+	PUSH,
+	//Entities
 	PERSON(new Image("img/person.png")),
 	MONKEY(new Image("img/MONKEY.png")),
 	SNAKE(new Image("img/snake.png")),
 	TIGER(new Image("img/tiger.png")),
-//	CAT(new Image("img/.png")),
+	//Places
 	UP(new Location(0, -100)),
 	RIGHT(new Location(200, 0)),
 	DOWN(new Location(0, 100)),
 	LEFT(new Location(-200, 0)),
 	CENTER(new Location(0, 0)),
+	//Properties
 	BIG(new Size(2, 2)), 
 	SMALL(new Size(0.5, 0.5)), 
 	THIN(new Size(0.5, 1)), 
 	THICK(new Size(2, 1)), 
 	SHORT(new Size(1, 0.5)), 
 	LONG(new Size(1, 2)),
+	//Colors
 	ALICEBLUE(Color.ALICEBLUE),
 	ANTIQUEWHITE(Color.ANTIQUEWHITE),
 	AQUA(Color.AQUA),
@@ -201,6 +211,11 @@ public enum Word {
 	//This is a noun
 	private Word(Image image){
 		this(null, null, null, image);
+	}
+	
+	//This is an event
+	private Word(){
+		this(null, null, null, null);
 	}
 	
 	public Info getInfo(){
