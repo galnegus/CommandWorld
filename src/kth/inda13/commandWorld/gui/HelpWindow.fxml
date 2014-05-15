@@ -4,9 +4,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ScrollPane?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-	minWidth="-Infinity" prefWidth="400.0" xmlns="http://javafx.com/javafx/8"
+	minWidth="-Infinity" prefWidth="500.0" xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<Label text="Command world" />
@@ -15,7 +16,8 @@
 			<panes>
 				<TitledPane text="How to use this program">
 					<content>
-						<VBox>
+					<ScrollPane>
+							<VBox>
 							<children>
 								<Label text="Write tags followed by words to make things happen on screen! "
 													StyleClass="pane-description" />
@@ -27,11 +29,13 @@
 								<Label text="'e blue i left small red monkey' makes an existing small red monkey in the left be blue." />
 								<Label text="'a monkey e eat i snake' makes an existing monkey eat an existing snake." />
 							</children>
-						</VBox>
+							</VBox>
+						</ScrollPane>
 					</content>
 				</TitledPane>
 				<TitledPane animated="false" text="Tags">
 					<content>
+					
 						<VBox>
 							<children> 
 																				<Label text="Use tags to tell the program what a word is."
@@ -63,6 +67,7 @@
 								</TitledPane>
 								<TitledPane text="Properties">
 									<content>
+									<ScrollPane>
 										<VBox>
 											<children>
 												<Label
@@ -235,6 +240,7 @@
 
 											</children>
 										</VBox>
+										</ScrollPane>
 									</content>
 								</TitledPane>
 								<TitledPane text="Events">
