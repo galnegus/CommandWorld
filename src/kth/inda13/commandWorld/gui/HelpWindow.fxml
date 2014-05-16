@@ -259,7 +259,6 @@
 								<Label text="Dance" styleClass="example" />
 								<Label text="Eat" styleClass="example" />
 								<Label text="Go " styleClass="example" />
-								<Label text="Stand" styleClass="example" />
 								<Label text="Kill" styleClass="example" />
 								<Label text="Push" styleClass="example" />
 								<Label text="Remove" styleClass="example" />
